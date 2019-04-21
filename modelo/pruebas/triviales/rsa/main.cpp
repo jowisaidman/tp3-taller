@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>           
-#include "rsa.h"
+#include "common_rsa.h"
 
 int main ()
 {

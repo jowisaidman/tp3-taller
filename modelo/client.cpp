@@ -21,15 +21,15 @@ int main(int argc, char *argv[]) {
     }
     
     //Abro archivos y parseo
-    std::string archivo_clave_cliente = argv[5];
+    std::string archivo_clave_cliente = argv[4];
     ClaveCliente claves_cliente(archivo_clave_cliente);
     claves_cliente.parser();
 
-    std::string archivo_clave_pub_srv = argv[6];
+    std::string archivo_clave_pub_srv = argv[5];
     ClavePublicaServer clave_pub_server(archivo_clave_pub_srv);
     clave_pub_server.parser();
 
-    std::string archivo_certificado = argv[4];
+    std::string archivo_certificado = argv[6];
     CertificadoCliente certificado(archivo_certificado);
     certificado.parser();
 

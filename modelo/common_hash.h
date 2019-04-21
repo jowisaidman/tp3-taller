@@ -8,7 +8,7 @@ class Hash {
  
     public:
         Hash();
-        unsigned short int calcularHash(const std::string &cadena);
+        uint16_t calcularHash(const std::string &cadena);
         ~Hash();
 };
 

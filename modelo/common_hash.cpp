@@ -6,10 +6,10 @@ Hash :: Hash() {
 Hash :: ~Hash() {
 }
 
-unsigned short int Hash :: calcularHash(const std::string &cadena) {
-    unsigned short int suma = 0;
+uint16_t Hash :: calcularHash(const std::string &cadena) {
+    uint16_t suma = 0;
     for (char c : cadena) {
-        suma += (unsigned char) c;
+        suma += (uint16_t) c;
     }
     return suma;
 }
