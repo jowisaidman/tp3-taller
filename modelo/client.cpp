@@ -51,12 +51,8 @@ int main(int argc, char *argv[]) {
 	
 	//envio mensaje
     std::string m = certificado.getNombre();
-    char mensaje[100];
-    memset(mensaje,'\0',100);
-    strncpy(mensaje,m.c_str(),m.size()+1);
-    std::cout << "el mensaje es: "<<mensaje <<std::endl;
-    socket_cliente.imprimirSocket();
-	socket_cliente.enviarMensaje(mensaje,m.size());
+    uint8_t n = 8;
+	socket_cliente.enviarMensaje(&n,1);
     socket_cliente.cerrarConexion();
     return 0;
 }

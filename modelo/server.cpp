@@ -42,14 +42,12 @@ int main(int argc, char *argv[]) {
     //acepto
     SocketConnect *socket_connect = socket_accept.acceptSocket();
     if (socket_connect == nullptr) return 1;
-    char mensaje[100];
-    memset(mensaje,'\0',100);
-    socket_connect->imprimirSocket(); 
-    if (!socket_connect->recivirMensaje(mensaje)) {
+    uint8_t n=0;
+    if (!socket_connect->recivirMensaje(&n,1)) {
         std::cout << "socket invalido" << std::endl;
         return 1; 
     }
-    std::cout << mensaje << std::endl;
+    printf("se recibio: %i\n",n);
     //ACA YA TENDRIA QUE TENER VARIOS HILOS ACEPTANDO NUEVAS CONEXIONES, HABRAI QUE PROTEGER EL METODO ACCEPT DE SOCKET ACCCEPT?
     socket_connect->cerrarConexion(); 
     delete socket_connect;

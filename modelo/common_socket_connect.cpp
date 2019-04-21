@@ -58,9 +58,10 @@ bool SocketConnect :: conectar() {
 
 
 
-int SocketConnect :: recivirMensaje(char buf[]) {
+int SocketConnect :: recivirMensaje(uint8_t *n,int tam) {
 	int total = 0,recivido = 0;
 	bool el_socket_es_valido = true;
+	char buf[50];
 	while (recivido < RESPONSE_MAX_LEN && el_socket_es_valido) {
 		recivido = recv(skt, &buf[recivido], RESPONSE_MAX_LEN-recivido, MSG_NOSIGNAL);
 		if (recivido <= 0) {
@@ -69,6 +70,7 @@ int SocketConnect :: recivirMensaje(char buf[]) {
 			total += recivido;
 		}
 	}
+	memcpy(n,(uint8_t*)buf,tam);
 	if (el_socket_es_valido) {
 		return total;
 	} else {
@@ -76,11 +78,13 @@ int SocketConnect :: recivirMensaje(char buf[]) {
 	}
 }
 
-int SocketConnect :: enviarMensaje(char msg[],int tam) { //esto esta mal porque debe ser un string, podria hacr una funcoin template
+int SocketConnect :: enviarMensaje(uint8_t *n,int tam) { //esto esta mal porque debe ser un string, podria hacr una funcoin template
 	int total = 0,enviado = 0;
 	bool el_socket_es_valido = true;
+	char buf[50];
+	memcpy((uint8_t*)buf,n,tam);
 	while (total < tam && el_socket_es_valido) {
-		enviado = send(skt, &msg[total], tam-total, MSG_NOSIGNAL); 
+		enviado = send(skt, &buf[total], tam-total, MSG_NOSIGNAL); 
 		if (enviado <= 0) {
 			el_socket_es_valido = false;
 		} else {
@@ -96,11 +100,6 @@ int SocketConnect :: enviarMensaje(char msg[],int tam) { //esto esta mal porque 
 
 void SocketConnect :: cerrarConexion() {
 	shutdown(skt, SHUT_RDWR);
-} 
-
-void SocketConnect :: imprimirSocket() {
-	std::cout << skt << std::endl;
-	std::cout << s << std::endl;
 } 
 
 SocketConnect :: ~SocketConnect() {
