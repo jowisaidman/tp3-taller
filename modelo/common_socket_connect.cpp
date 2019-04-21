@@ -58,7 +58,7 @@ bool SocketConnect :: conectar() {
 
 
 
-int SocketConnect :: recivirMensaje(uint8_t *n,int tam) {
+/*int SocketConnect :: recibirMensaje(uint8_t *n,int tam) {
 	int total = 0,recivido = 0;
 	bool el_socket_es_valido = true;
 	char buf[50];
@@ -96,7 +96,7 @@ int SocketConnect :: enviarMensaje(uint8_t *n,int tam) { //esto esta mal porque 
 	} else {
 		return -1;
 	}
-}
+}*/
 
 void SocketConnect :: cerrarConexion() {
 	shutdown(skt, SHUT_RDWR);
