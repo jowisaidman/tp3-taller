@@ -75,12 +75,11 @@ bool SocketAccept :: listenSocketAccept() {
 	return true;
 }
 
-/*bool SocketAccept :: acceptSocket(SocketConnect *skt_c) {
+SocketConnect *SocketAccept :: acceptSocket() {
 	int skt_aceptado = accept(skt, NULL, NULL); 
 	if (skt == -1) {
 		printf("Error: %s\n", strerror(errno));
-		return false;
+		return nullptr;
 	}
-	SocketConnect(skt_accept);
-	return true; 
-}*/ //tiene que ser creado aca, debe devolver un puntero y hacer un new y despues deletearlo cuando termine la conexion
+	return new SocketConnect(skt_aceptado);
+} //tiene que ser creado aca, debe devolver un puntero y hacer un new y despues deletearlo cuando termine la conexion

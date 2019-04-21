@@ -1,6 +1,7 @@
 #define RESPONSE_MAX_LEN 100
 #include <string.h>
 #include <string>
+#include <iostream>
 #include "common_socket_connect.h"
 
 void SocketConnect :: set_hints_socket() {
@@ -11,12 +12,12 @@ void SocketConnect :: set_hints_socket() {
 }
 
 SocketConnect :: SocketConnect() {
-	s = 0;
-	skt = 0;
+	s = -1;
+	skt = -1;
 }
 
 SocketConnect :: SocketConnect(int socket) {
-	s = 0;  
+	s = -1;  
 	skt = socket;
 }
 
@@ -55,7 +56,9 @@ bool SocketConnect :: conectar() {
 	return true;
 }
 
-int SocketConnect :: recivirMensaje(std::string &buf) {
+
+
+int SocketConnect :: recivirMensaje(char buf[]) {
 	int total = 0,recivido = 0;
 	bool el_socket_es_valido = true;
 	while (recivido < RESPONSE_MAX_LEN && el_socket_es_valido) {
@@ -73,9 +76,8 @@ int SocketConnect :: recivirMensaje(std::string &buf) {
 	}
 }
 
-int SocketConnect :: enviarMensaje(std::string &msg) { //esto esta mal porque debe ser un string, podria hacr una funcoin template
+int SocketConnect :: enviarMensaje(char msg[],int tam) { //esto esta mal porque debe ser un string, podria hacr una funcoin template
 	int total = 0,enviado = 0;
-	int tam = msg.size();
 	bool el_socket_es_valido = true;
 	while (total < tam && el_socket_es_valido) {
 		enviado = send(skt, &msg[total], tam-total, MSG_NOSIGNAL); 
@@ -91,6 +93,15 @@ int SocketConnect :: enviarMensaje(std::string &msg) { //esto esta mal porque de
 		return -1;
 	}
 }
+
+void SocketConnect :: cerrarConexion() {
+	shutdown(skt, SHUT_RDWR);
+} 
+
+void SocketConnect :: imprimirSocket() {
+	std::cout << skt << std::endl;
+	std::cout << s << std::endl;
+} 
 
 SocketConnect :: ~SocketConnect() {
     /*No hace nada*/

@@ -24,9 +24,11 @@ class SocketConnect {
         SocketConnect(int socket);
         bool addrinfo(const char *hostn, const char *srvn);
         bool conectar();
-        int recivirMensaje(std::string &buf);
-        int enviarMensaje(std::string &msg);
+        int recivirMensaje(char buf[]);
+        int enviarMensaje(char msg[],int tam);
+        void cerrarConexion();
         ~SocketConnect();
+        void imprimirSocket(); // hay que borrrrarrrrr
 };
 
 #endif
