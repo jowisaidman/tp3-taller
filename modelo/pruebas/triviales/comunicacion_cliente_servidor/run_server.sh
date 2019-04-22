@@ -1,2 +1,2 @@
 #!/usr/bin/
-valgrind ./server 8080 server.keys indice.txt 
+valgrind -v ./server 8080 server.keys indice.txt 

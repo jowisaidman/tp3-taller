@@ -5,7 +5,7 @@
 #include "common_hash.h"
 #include "common_rsa.h"
 #include "client_clave.h"
-#include "client_certificado.h"
+#include "client_request.h"
 #include "client_clave_server.h"
 #include "common_socket_connect.h"
 
@@ -30,9 +30,9 @@ int main(int argc, char *argv[]) {
     ClavePublicaServer clave_pub_server(archivo_clave_pub_srv);
     clave_pub_server.parser();
 
-    std::string archivo_certificado = argv[6];
-    CertificadoCliente certificado(archivo_certificado);
-    certificado.parser();
+    std::string archivo_request = argv[6];
+    RequestCliente request(archivo_request);
+    request.parser();
 
 	//creo socket
    	SocketConnect socket_cliente;            
@@ -54,47 +54,47 @@ int main(int argc, char *argv[]) {
     uint8_t m;
     if (modo == "new") {
         m = 0;
-        socket_cliente.enviarMensaje(&m,1);
+        socket_cliente.enviarMensaje(&m,sizeof(uint8_t));
     } else {
         m = 1;
-        socket_cliente.enviarMensaje(&m,1);
+        socket_cliente.enviarMensaje(&m,sizeof(uint8_t));
     }
 
     //envio nombre
-    std::string nombre = certificado.getNombre();
+    std::string nombre = request.getNombre();
     if (socket_cliente.enviarString(nombre) == -1) {
         std::cout << "Problema en enviar nombre" << std::endl;
         return 1;
     }
 
-/*
+
     //envio modulo
     uint16_t mod = claves_cliente.getModulo();
-    if (socket_cliente.enviarMensaje(&mod,2) == -1) {
+    if (socket_cliente.enviarMensaje(&mod,sizeof(uint16_t)) == -1) {
             std::cout << "Problema en enviar modulo" << std::endl;
             return 1;       
     }
 
     //envio exponente publico
     uint8_t exp_publico = claves_cliente.getExponentePublico();
-    if (socket_cliente.enviarMensaje(&exp_publico,1) == -1) {
+    if (socket_cliente.enviarMensaje(&exp_publico,sizeof(uint8_t)) == -1) {
             std::cout << "Problema en enviar exponente publico" << std::endl;
             return 1;       
     }    
 
     //envio fecha si es que hay
-    if (certificado.ingresoFechas()) {
-        std::string fecha_inicial = certificado.getFechaInicial();
+    if (request.ingresoFechas()) {
+        std::string fecha_inicial = request.getFechaInicial();
         if (socket_cliente.enviarString(fecha_inicial) == -1) {
             std::cout << "Problema en enviar fecha inicial" << std::endl;
             return 1;
         }        
-        std::string fecha_final = certificado.getFechaFinal();
+        std::string fecha_final = request.getFechaFinal();
         if (socket_cliente.enviarString(fecha_final) == -1) {
             std::cout << "Problema en enviar fecha final" << std::endl;
             return 1;
         } 
-    }*/
+    }
 
     socket_cliente.cerrarConexion(); //deberia cerrar la conexion solo de escritura
     return 0;

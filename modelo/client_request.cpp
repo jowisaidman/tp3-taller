@@ -1,11 +1,11 @@
 #include <string>
-#include "client_certificado.h"
+#include "client_request.h"
 
 /*void split(std::string buffer) {
 
 }*/
 
-void CertificadoCliente :: parser() {
+void RequestCliente :: parser() {
     std::string buf;
     leerArchivo(buf);
     size_t pos = 0;
@@ -26,18 +26,18 @@ void CertificadoCliente :: parser() {
     }    
 }
 
-std::string CertificadoCliente :: getNombre(){
+std::string RequestCliente :: getNombre(){
     return nombre;
 }
 
-std::string CertificadoCliente :: getFechaInicial(){
+std::string RequestCliente :: getFechaInicial(){
     return fecha_inicial;
 }
 
-std::string CertificadoCliente :: getFechaFinal(){
+std::string RequestCliente :: getFechaFinal(){
     return fecha_final;
 }
 
-bool CertificadoCliente :: ingresoFechas() {
+bool RequestCliente :: ingresoFechas() {
     return ingreso_fechas;
 }

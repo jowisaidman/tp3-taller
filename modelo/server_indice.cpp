@@ -65,6 +65,10 @@ void Indice :: incrementarIndice() {
     indice_archivo++;
 }
 
+uint32_t Indice :: getIndice() {
+    return indice_archivo;
+}
+
 void Indice :: agregarCliente(std::string &nombre,
   std::string &exponente,std::string &modulo,int &indice) {
     //uint16_t mod = (uint16_t)stoi(modulo);

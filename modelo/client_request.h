@@ -1,12 +1,12 @@
-#ifndef CERTIFICADO_CLIENTE_H
-#define CERTIFICADO_CLIENTE_H
+#ifndef REQUEST_CLIENTE_H
+#define REQUEST_CLIENTE_H
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include "common_archivo.h"
 
-class CertificadoCliente : public Archivo {
+class RequestCliente : public Archivo {
     private:
         std::string nombre;
         std::string fecha_inicial;

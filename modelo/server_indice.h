@@ -11,7 +11,7 @@ class Indice { //no hereda de archivo porque a diferencia de los demas parseo mi
     private:
         std::fstream archivo;
         std::map<int,Cliente*> clientes; //ESTE MAP VA TENER QUE ESTAR PROTEGIDO
-        int indice_archivo;
+        uint32_t indice_archivo;
 
     public:
         Indice(std::string &nombre_archivo);
@@ -22,6 +22,7 @@ class Indice { //no hereda de archivo porque a diferencia de los demas parseo mi
         bool &es_el_exp, bool &es_el_indice,int &indice);
         void incrementarIndice();
         void decrementarIndice();
+        uint32_t getIndice(); 
         //buscarCliente(Cliente)
         void agregarCliente(std::string &nombre
         ,std::string &exponente,std::string &modulo,int &indice);
