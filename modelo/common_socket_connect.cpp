@@ -1,4 +1,3 @@
-#define RESPONSE_MAX_LEN 100
 #include <string.h>
 #include <string>
 #include <iostream>
@@ -56,6 +55,33 @@ bool SocketConnect :: conectar() {
 	return true;
 }
 
+int SocketConnect :: enviarString(std::string &cadena) {
+	uint32_t tam = (uint32_t)cadena.size();
+	char cad[50];
+	//memset(cad,0,50);
+	strncpy(cad, cadena.data(),cadena.size());
+	int env_tam = enviarMensaje(&tam,sizeof(uint32_t));
+	int env_cad =  enviarMensaje(cad,tam);
+	if (env_tam == -1 or env_cad == -1) {
+		return -1;
+	} else {
+		return env_cad;
+	}	
+}
+
+int SocketConnect :: recibirString(std::string &cadena) {
+	uint32_t tam = 0; //nose si estaria bien inicializarlo en 0
+	char buffer[50];
+	int tam_rec = recibirMensaje(&tam,sizeof(uint32_t));
+	int rec = recibirMensaje(buffer,(int)tam);
+	buffer[tam] = '\0';
+	cadena = buffer;
+	if (rec == -1 or tam_rec == -1) {
+		return -1;
+	} else {
+		return rec;
+	}
+}
 
 
 /*int SocketConnect :: recibirMensaje(uint8_t *n,int tam) {

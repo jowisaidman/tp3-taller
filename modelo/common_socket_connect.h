@@ -1,6 +1,6 @@
 #ifndef SOCKET_CONNECT_H
 #define SOCKET_CONNECT_H
-#define RESPONSE_MAX_LEN 100
+#define RESPONSE_MAX_LEN 50
 
 #include <string>
 #include <stdio.h>
@@ -26,8 +26,8 @@ class SocketConnect {
         SocketConnect(int socket);
         bool addrinfo(const char *hostn, const char *srvn);
         bool conectar();
-        //int recibirMensaje(uint8_t *n,int tam);
-        //int enviarMensaje(uint8_t *n,int tam);
+        int enviarString(std::string &cadena);
+        int recibirString(std::string &cadena);
         void cerrarConexion();
         ~SocketConnect();
 
@@ -54,20 +54,21 @@ class SocketConnect {
 
         template <class T>
         int recibirMensaje(T msg, int tam) {
-            int total = 0,recivido = 0;
+            int recibido = 0,r = 0;
             bool el_socket_es_valido = true;
             char buf[RESPONSE_MAX_LEN];
-            while (recivido < RESPONSE_MAX_LEN && el_socket_es_valido) {
-                recivido = recv(skt, &buf[recivido], RESPONSE_MAX_LEN-recivido, MSG_NOSIGNAL);
-                if (recivido <= 0) {
+            memset(buf,'\0',RESPONSE_MAX_LEN);
+            while (recibido < tam && el_socket_es_valido) {
+                r = recv(skt, &buf[recibido], tam-recibido, MSG_NOSIGNAL);
+                if (r <= 0) {
                     el_socket_es_valido = false;
                 } else {
-                    total += recivido;
+                    recibido += r;
                 }
             }
             memcpy(msg,(uint8_t*)buf,tam);
             if (el_socket_es_valido) {
-                return total;
+                return recibido;
             } else {
                 return -1;
             }

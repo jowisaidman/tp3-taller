@@ -42,13 +42,27 @@ int main(int argc, char *argv[]) {
     //acepto
     SocketConnect *socket_connect = socket_accept.acceptSocket();
     if (socket_connect == nullptr) return 1;
-    uint8_t n=0;
-    if (!socket_connect->recibirMensaje(&n,1)) {
-        std::cout << "socket invalido" << std::endl;
+    
+    //ACA YA TENDRIA QUE TENER VARIOS HILOS ACEPTANDO NUEVAS CONEXIONES, HABRAI QUE PROTEGER EL METODO ACCEPT DE SOCKET ACCCEPT?
+    //Comienzo a recibir mensaje
+    //recibo modo
+    uint8_t m = -1; //incio en modo invalido
+    if (!socket_connect->recibirMensaje(&m,1)) {
+        std::cout << "se recibio mal en modo" << std::endl;
+        delete socket_connect;
         return 1; 
     }
-    printf("se recibio: %i\n",n);
-    //ACA YA TENDRIA QUE TENER VARIOS HILOS ACEPTANDO NUEVAS CONEXIONES, HABRAI QUE PROTEGER EL METODO ACCEPT DE SOCKET ACCCEPT?
+    printf("se recibio el modo: %i\n",m);
+
+    //recibo subject
+    std::string subject;
+    if(!socket_connect->recibirString(subject)) {
+        std::cout << "se recibio mal en modo" << std::endl;
+        return 1; 
+    }
+    std::cout << "Se recibio el subject: " << subject << std::endl;
+
+
     socket_connect->cerrarConexion(); 
     delete socket_connect;
     indice.escribirArchivo();
