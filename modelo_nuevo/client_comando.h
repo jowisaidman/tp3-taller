@@ -1,6 +1,7 @@
 #ifndef CLIENT_COMANDO_H
 #define CLIENT_COMANDO_H
 #include "common_protocolo.h"
+#include "common_certificado.h"
 #include "common_socket_connect.h"
 #include "client_request.h"
 #include "client_clave_server.h"
@@ -14,12 +15,14 @@ class ComandoCliente {
 
         bool enviarModo(uint8_t m,SocketConnect &socket);
         //bool enviarNombre(std::string &nombre, SocketConnect &socket);
+        bool comandoNewRecibirRespuesta(SocketConnect &socket,Protocolo &protocolo,
+        ClavePublicaServer &clave_server,ClaveCliente &clave_cliete);
 
     public:
         ComandoCliente();
         ~ComandoCliente();
         bool comandoNew(SocketConnect &socket,RequestCliente &request
-        , ClaveCliente &claves_cliente);
+        , ClaveCliente &claves_cliente,ClavePublicaServer &clave_server);
         bool comandoRevoke(SocketConnect &socket);
 };
 

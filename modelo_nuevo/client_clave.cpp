@@ -10,8 +10,6 @@ void ClaveCliente :: parser() {
     std::string token;
     std::string delimitador = " ";
     while ((pos = buf.find(delimitador)) != std::string::npos) {
-        //std::cout << token << std::endl;
-        //std::cout << num_de_palabra << std::endl;
         token = buf.substr(0, pos);
         if (num_de_palabra == 0) exp_publico = (uint8_t)stoi(token);
         if (num_de_palabra == 1) exp_privado = (uint8_t)stoi(token);

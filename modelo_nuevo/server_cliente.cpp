@@ -22,6 +22,10 @@ std::string Cliente :: getExponente() {
     return exponente;
 }
 
+bool Cliente :: operator==(const Cliente &otro) const {
+    return this->nombre == otro.nombre;
+}
+
 
 /*void Cliente :: imprimirCliente() { //[HAY QUE BORRAR ESTA FUNCION]
     std::cout << nombre << std::endl;

@@ -14,7 +14,6 @@ class Certificado {
         uint16_t modulo;
         uint8_t exponente;
         std::string certificado_completo;
-
         void agregarSerialNumber();
         std::string getHexadecimal(int largo,int n);
         void agregarValidity();
@@ -26,6 +25,14 @@ class Certificado {
         ~Certificado();
         void parser();
         uint16_t calcularHash();
+        uint32_t calcularRsa(const uint32_t &hash ,const uint8_t &exp, const uint16_t &mod);
+        uint32_t getSerialNumber();
+        std::string getSubject();
+        std::string getIssuer();
+        std::string getFechaInicio();
+        std::string getFechaFin();
+        uint16_t getModulo();
+        uint8_t getExponente();
         void imprmirCertificado();
 };
 

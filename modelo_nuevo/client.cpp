@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     ComandoCliente comando;
 
     if (modo == "new") {
-        comando.comandoNew(socket_cliente,request,claves_cliente);
+        comando.comandoNew(socket_cliente,request,claves_cliente,clave_pub_server);
     }
 
     socket_cliente.cerrarConexion();

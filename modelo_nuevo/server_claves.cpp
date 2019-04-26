@@ -11,10 +11,10 @@ void Claves :: parser() {
         token = buf.substr(0, pos);
         if (num_de_palabra == 0) exp_publico = (uint8_t)stoi(token);
         if (num_de_palabra == 1) exp_privado = (uint8_t)stoi(token);
-        if (num_de_palabra == 2) mod = (uint16_t)stoi(token);
         buf.erase(0, pos + delimitador.length());
         num_de_palabra++;
-    }    
+    }
+    mod = (uint16_t)stoi(buf); 
 }
 
 uint8_t Claves :: getModulo() {

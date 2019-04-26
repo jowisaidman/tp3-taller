@@ -17,7 +17,7 @@ class Cliente {
         std::string getExponente();
         std::string getNombre();
         std::string getModulo();
-        //operador =
+        bool operator==(const Cliente& otro) const;
 
 };
 

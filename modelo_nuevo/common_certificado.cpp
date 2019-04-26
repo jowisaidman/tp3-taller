@@ -4,6 +4,7 @@
 #include "common_certificado.h"
 #include "common_fecha.h"
 #include "common_hash.h"
+#include "common_rsa.h"
 
 Certificado :: Certificado(uint32_t sn,std::string &nombre,std::string &fecha_inicio
     ,std::string &fecha_fin,uint16_t mod, uint8_t exp) {
@@ -69,11 +70,38 @@ void Certificado :: parser() {
     agregegarPublicKeyInfo();
 }
 
-void Certificado :: imprmirCertificado() {
+void Certificado :: imprmirCertificado() { //HAT QUE BORRAR ESTOO
     std::cout << certificado_completo << std::endl;
 }
 
 uint16_t Certificado :: calcularHash() {
     Hash hash;
     return hash.calcularHash(certificado_completo);
+}
+
+uint32_t Certificado :: calcularRsa(const uint32_t &hash ,const uint8_t &exp, const uint16_t &mod) {
+    Rsa rsa;
+    return rsa.calcularRsa(hash,exp,mod);    
+}
+
+uint32_t Certificado :: getSerialNumber() {
+    return this->serial_number;
+}
+std::string Certificado :: getSubject() {
+    return this->subject;
+}
+std::string Certificado :: getIssuer() {
+    return "Taller de programacion 1";
+}
+std::string Certificado :: getFechaInicio() {
+    return this->fecha_inicial;
+}
+std::string Certificado :: getFechaFin() {
+    return this->fecha_final;
+}
+uint16_t Certificado :: getModulo() {
+    return this->modulo;
+}
+uint8_t Certificado :: getExponente() {
+    return this->exponente;
 }

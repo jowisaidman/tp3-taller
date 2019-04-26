@@ -6,18 +6,22 @@
 #include "common_socket_connect.h"
 #include "server_claves.h"
 #include "server_indice.h"
+#include "common_certificado.h"
 
 class ComandoServidor {
     private:
         Protocolo protocolo;
-        bool comandoNew(SocketConnect &socket,Indice &indice);
+        bool comandoNew(SocketConnect &socket,Indice &indice,Claves &claves);
         bool comandoRevoke();
+        bool comandoNewEnviarRespuesta(SocketConnect &socket,
+            Certificado &certificado,const uint32_t &rsa);
+        
 
 
     public:
         ComandoServidor();
         ~ComandoServidor();
-        bool inciarModo(SocketConnect &socket,Indice &indice);
+        bool inciarModo(SocketConnect &socket,Indice &indice,Claves &claves);
 
 };
 

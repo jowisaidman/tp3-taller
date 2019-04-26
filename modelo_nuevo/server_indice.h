@@ -9,9 +9,15 @@
 
 class Indice { //no hereda de archivo porque a diferencia de los demas parseo mientras leo
     private:
+        std::string nombre_archivo;
         std::fstream archivo;
-        std::map<int,Cliente*> clientes; //ESTE MAP VA TENER QUE ESTAR PROTEGIDO
+        std::map<std::string,Cliente*> clientes; //ESTE MAP VA TENER QUE ESTAR PROTEGIDO
         uint32_t indice_archivo;
+
+        void agregarCliente(std::string &nombre
+        ,std::string &exponente,std::string &modulo);
+        void incrementarIndice();
+        void decrementarIndice();
 
     public:
         Indice(std::string &nombre_archivo);
@@ -19,16 +25,14 @@ class Indice { //no hereda de archivo porque a diferencia de los demas parseo mi
         void leerArchivo();
         void parser(std::string &bf_aux,std::string &nombre_cliente
         ,std::string &exponente,bool &primer_palabra,
-        bool &es_el_exp, bool &es_el_indice,int &indice);
-        void incrementarIndice();
-        void decrementarIndice();
-        uint32_t getIndice(); 
-        //buscarCliente(Cliente)
-        void agregarCliente(std::string &nombre
-        ,std::string &exponente,std::string &modulo,int &indice);
+        bool &es_el_exp, bool &es_el_indice);
+        uint32_t getIndice();
+        void agregarNuevoCliente(std::string &nombre
+        ,uint8_t exponente,uint16_t modulo);
+        bool clientePerteneceAlIndice(const std::string &cliente); 
         //quitarCliente(Cliente) ->hay que hacer delete
         void escribirArchivo();
-        //void imprimirClientes(); //[HYA QUE BORRAR ESTA FUNCION]
+        void imprimirClientes(); //[HYA QUE BORRAR ESTA FUNCION]
 };
 
 

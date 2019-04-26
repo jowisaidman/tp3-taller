@@ -3,8 +3,10 @@
 #include "server_indice.h"
 
 Indice :: Indice(std::string &nombre_archivo) :
-    archivo(nombre_archivo, std::fstream::in | std::fstream::out) ,clientes() {
+    archivo(nombre_archivo, std::fstream::in) ,clientes() {
         leerArchivo();
+        this->nombre_archivo = nombre_archivo;
+        this->imprimirClientes();
 }
 
 Indice :: ~Indice() {
@@ -13,7 +15,7 @@ Indice :: ~Indice() {
 
 void  Indice :: parser(std::string &bf_aux,std::string &nombre_cliente
     ,std::string &exponente,bool &primer_palabra, bool &es_el_exp
-    , bool &es_el_indice, int &indice) {
+    , bool &es_el_indice) {
     if (es_el_indice) {
         indice_archivo = stoi(bf_aux);
         es_el_indice = false;
@@ -30,8 +32,8 @@ void  Indice :: parser(std::string &bf_aux,std::string &nombre_cliente
             exponente = bf_aux;
             es_el_exp = false;
         } else {
-            agregarCliente(nombre_cliente,exponente,bf_aux,indice);
-            indice++;
+            agregarCliente(nombre_cliente,exponente,bf_aux);
+            nombre_cliente = "";
             es_el_exp = true;
         }
         return;
@@ -46,14 +48,13 @@ void  Indice :: parser(std::string &bf_aux,std::string &nombre_cliente
 
 void Indice :: leerArchivo() {
     std::string bf_aux;
-    std::string nombre_cliente = "";
     std::string exponente;
     bool primer_palabra = true;
     bool es_el_exp = true;
     bool es_el_indice = true;
-    int indice = 0;
+    std::string nombre_cliente = "";
     while (archivo >> bf_aux) {
-        parser(bf_aux,nombre_cliente,exponente,primer_palabra,es_el_exp,es_el_indice,indice);
+        parser(bf_aux,nombre_cliente,exponente,primer_palabra,es_el_exp,es_el_indice);
     }
 }
 
@@ -69,27 +70,43 @@ uint32_t Indice :: getIndice() {
     return indice_archivo;
 }
 
+bool Indice :: clientePerteneceAlIndice(const std::string &cliente) {
+    for (std::map<std::string,Cliente*>::iterator it=clientes.begin(); it!=clientes.end(); ++it) {
+        if (cliente == it->second->getNombre()) {
+            std::cout << "Se encontro el cliente\n"; //borrar
+            return true;
+        }
+    }
+    return false;    
+}
+
 void Indice :: agregarCliente(std::string &nombre,
-  std::string &exponente,std::string &modulo,int &indice) {
-    //uint16_t mod = (uint16_t)stoi(modulo);
-    //uint8_t exp = (uint8_t)stoi(exponente);
-    Cliente *cliente = new Cliente(std::move(nombre),std::move(exponente),std::move(modulo));
-    clientes[indice] = cliente;
+  std::string &exponente,std::string &modulo) {
+    Cliente *cliente = new Cliente(nombre,exponente,modulo);
+    this->clientes.insert({nombre,cliente});
+}
+
+void Indice :: agregarNuevoCliente(std::string &nombre,
+    uint8_t exponente,uint16_t modulo) {
+        std::string exp = std::to_string(exponente);
+        std::string mod = std::to_string(modulo);
+        this->agregarCliente(nombre,exp,mod);
+        this->incrementarIndice();
 }
 
 
-/*void Indice :: imprimirClientes() { //HAY QUE BORRAR ESTA FUNCION
-    for (int i = 0; i<indice_archivo-1 ;i++) {
-        Cliente *cliente = clientes[i];
-        cliente->imprimirCliente();
+void Indice :: imprimirClientes() { //HAY QUE BORRAR ESTA FUNCION
+    for (std::map<std::string,Cliente*>::iterator it=clientes.begin(); it!=clientes.end(); ++it) {
+        std::cout << it->second->getNombre()<< "; " << it->second->getExponente()<< ' ' << it->second->getModulo() << '\n';
     }
-}*/
+}
 
 void Indice :: escribirArchivo() {
+    archivo.close();
+    archivo.open(this->nombre_archivo, std::fstream::out | std::fstream::trunc);
     archivo << indice_archivo << '\n';
-    for (std::map<int,Cliente*>::iterator it=clientes.begin(); it!=clientes.end(); ++it) {
-        archivo << it->second->getNombre()<< "; " << it->second->getExponente()<< ' ' << it->second->getModulo() << '\n'; //NO ESTA ESCRIBIENDO
+    for (std::map<std::string,Cliente*>::iterator it=clientes.begin(); it!=clientes.end(); ++it) {
+        archivo << it->second->getNombre()<< "; " << it->second->getExponente()<< ' ' << it->second->getModulo() << '\n';
         delete it->second;
     }
-    archivo << "OK" << '\n';
 }

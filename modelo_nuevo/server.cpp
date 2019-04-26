@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     //Abro archivos, parseo y cargo en memoria datos necesarios 
     std::string archivo_claves = argv[2];
     Claves claves(archivo_claves);
+    claves.parser();
 
     std::string archivo_indice = argv[3];
     Indice indice(archivo_indice);
@@ -47,10 +48,9 @@ int main(int argc, char *argv[]) {
 
     ComandoServidor comando;
 
-    comando.inciarModo(*socket_connect,indice);
+    comando.inciarModo(*socket_connect,indice,claves);
     //ACA YA TENDRIA QUE TENER VARIOS HILOS ACEPTANDO NUEVAS CONEXIONES, HABRAI QUE PROTEGER EL METODO ACCEPT DE SOCKET ACCCEPT
 
-    std::cout << "termino ejecucion" << std::endl;
     socket_connect->cerrarConexion(); 
     delete socket_connect;
     indice.escribirArchivo();
