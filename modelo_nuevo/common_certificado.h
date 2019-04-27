@@ -34,6 +34,7 @@ class Certificado {
         uint16_t getModulo();
         uint8_t getExponente();
         void imprmirCertificado();
+        std::string getCertificado();
 };
 
 #endif

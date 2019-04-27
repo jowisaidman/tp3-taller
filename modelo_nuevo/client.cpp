@@ -18,10 +18,6 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     std::string modo = argv[3];
-    if (modo != "new" && modo != "revoke") {
-        std::cout << "Error: argumentos invalidos." << std::endl; //Ver que endl sea \n
-        return 0;        
-    }
     
     //Abro archivos y parseo [FALTA CHEQUEAR QUE LOS ARCHIVOS SE ABRIERON BIEN]
     std::string archivo_clave_cliente = argv[4];
@@ -52,6 +48,11 @@ int main(int argc, char *argv[]) {
 
     if (modo == "new") {
         comando.comandoNew(socket_cliente,request,claves_cliente,clave_pub_server);
+    } else if (modo == "revoke") {
+        //comando.comandoRevoke(socket_cliente,request,claves_cliente,clave_pub_server);
+    } else {
+        std::cout << "Error: argumentos invalidos." << std::endl; //Ver que endl sea \n
+        return 0;        
     }
 
     socket_cliente.cerrarConexion();

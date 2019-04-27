@@ -17,13 +17,16 @@ class ComandoCliente {
         //bool enviarNombre(std::string &nombre, SocketConnect &socket);
         bool comandoNewRecibirRespuesta(SocketConnect &socket,Protocolo &protocolo,
         ClavePublicaServer &clave_server,ClaveCliente &clave_cliete);
+        void guardarCertificado(Certificado &certificado);
+
 
     public:
         ComandoCliente();
         ~ComandoCliente();
         bool comandoNew(SocketConnect &socket,RequestCliente &request
         , ClaveCliente &claves_cliente,ClavePublicaServer &clave_server);
-        bool comandoRevoke(SocketConnect &socket);
+        bool comandoRevoke(SocketConnect &socket,RequestCliente &request,
+         ClaveCliente &claves_cliente,ClavePublicaServer &clave_server);
 };
 
 #endif

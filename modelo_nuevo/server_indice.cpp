@@ -6,7 +6,6 @@ Indice :: Indice(std::string &nombre_archivo) :
     archivo(nombre_archivo, std::fstream::in) ,clientes() {
         leerArchivo();
         this->nombre_archivo = nombre_archivo;
-        this->imprimirClientes();
 }
 
 Indice :: ~Indice() {
@@ -95,11 +94,11 @@ void Indice :: agregarNuevoCliente(std::string &nombre,
 }
 
 
-void Indice :: imprimirClientes() { //HAY QUE BORRAR ESTA FUNCION
+/*void Indice :: imprimirClientes() { //HAY QUE BORRAR ESTA FUNCION
     for (std::map<std::string,Cliente*>::iterator it=clientes.begin(); it!=clientes.end(); ++it) {
         std::cout << it->second->getNombre()<< "; " << it->second->getExponente()<< ' ' << it->second->getModulo() << '\n';
     }
-}
+}*/
 
 void Indice :: escribirArchivo() {
     archivo.close();
@@ -109,4 +108,14 @@ void Indice :: escribirArchivo() {
         archivo << it->second->getNombre()<< "; " << it->second->getExponente()<< ' ' << it->second->getModulo() << '\n';
         delete it->second;
     }
+}
+
+bool Indice :: eliminarCliente(const std::string nombre) {
+    if (this->clientePerteneceAlIndice(nombre)) {
+        Cliente *cliente = this->clientes[nombre];
+        delete cliente;
+        clientes.erase(nombre);
+        return true;
+    }
+    return false;
 }

@@ -43,13 +43,12 @@ int main(int argc, char *argv[]) {
     if (!socket_accept.listenSocketAccept()) return 1;
 
     //acepto
-    SocketConnect *socket_connect = socket_accept.acceptSocket();
+    SocketConnect *socket_connect = socket_accept.acceptSocket(); //esto se hace en una clase aparte "AceptadorDeConexiones" quiza
     if (socket_connect == nullptr) return 1;
 
     ComandoServidor comando;
 
     comando.inciarModo(*socket_connect,indice,claves);
-    //ACA YA TENDRIA QUE TENER VARIOS HILOS ACEPTANDO NUEVAS CONEXIONES, HABRAI QUE PROTEGER EL METODO ACCEPT DE SOCKET ACCCEPT
 
     socket_connect->cerrarConexion(); 
     delete socket_connect;

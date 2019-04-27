@@ -83,12 +83,7 @@ bool ComandoServidor :: comandoNew(SocketConnect &socket,Indice &indice,Claves &
     uint8_t rta_del_cliente;
     if (!this->protocolo.recibirInt8(&rta_del_cliente,socket)) return false;
     if (rta != 0) return false;
-    std::cout << "Antes de agregar: " << std::endl; 
-    indice.imprimirClientes();
     indice.agregarNuevoCliente(subject,exp,mod);
-    std::cout << "Despues de agregar: " << std::endl; 
-    indice.imprimirClientes();
-
     return true;
 }
 

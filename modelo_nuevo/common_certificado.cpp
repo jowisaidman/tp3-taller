@@ -105,3 +105,7 @@ uint16_t Certificado :: getModulo() {
 uint8_t Certificado :: getExponente() {
     return this->exponente;
 }
+
+std::string Certificado :: getCertificado() {
+    return this->certificado_completo;
+}

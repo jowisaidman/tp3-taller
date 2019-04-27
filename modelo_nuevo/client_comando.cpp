@@ -9,11 +9,14 @@ ComandoCliente :: ~ComandoCliente() {
 }
 
 bool ComandoCliente :: enviarModo(uint8_t m,SocketConnect &socket) {
-    if (this->protocolo.enviarInt8(m,socket) == -1) {
-        std::cout << "Problema en enviar nombre" << std::endl;
-        return false;        
-    }
+    if (this->protocolo.enviarInt8(m,socket) == -1) return false;
     return true;    
+}
+
+void ComandoCliente :: guardarCertificado(Certificado &certificado) {
+    std::ofstream ofs(certificado.getSubject(), std::ofstream::out);
+    ofs << certificado.getCertificado();
+    ofs.close();
 }
 
 bool ComandoCliente :: comandoNewRecibirRespuesta(SocketConnect &socket,
@@ -59,10 +62,11 @@ bool ComandoCliente :: comandoNewRecibirRespuesta(SocketConnect &socket,
 
     uint32_t hash = certificado.calcularHash();
     uint32_t rsa = certificado.calcularRsa(huella,exp_privado_cliente,mod);
-    rsa = certificado.calcularRsa(rsa,exp_servidor,mod_servidor); //falta verificar que coicidan
+    rsa = certificado.calcularRsa(rsa,exp_servidor,mod_servidor); //falta verificar que coicidan e imprmir, se deberia hacer funcion aparte
     std::cout << "Huella del servidor: " << huella << std::endl;
     std::cout << "Hash del servidor: " << hash << std::endl;
     std::cout << "Hash calculado " << rsa << std::endl;
+    this->guardarCertificado(certificado);
     return true;
 }
 
@@ -99,3 +103,7 @@ bool ComandoCliente :: comandoNew(SocketConnect &socket ,RequestCliente &request
     return true;
 }
 
+bool comandoRevoke(SocketConnect &socket,RequestCliente &request,
+    ClaveCliente &claves_cliente,ClavePublicaServer &clave_server) {
+        return true;
+    }
