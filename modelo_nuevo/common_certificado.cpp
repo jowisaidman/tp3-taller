@@ -6,7 +6,15 @@
 #include "common_hash.h"
 #include "common_rsa.h"
 
-Certificado :: Certificado(uint32_t sn,std::string &nombre,std::string &fecha_inicio
+Certificado :: Certificado() {
+    /*No hace nada*/
+}
+
+Certificado :: ~Certificado() {
+    /*No hace nada*/
+}
+
+void Certificado :: setAtributos(uint32_t sn,std::string &nombre,std::string &fecha_inicio
     ,std::string &fecha_fin,uint16_t mod, uint8_t exp) {
         serial_number = sn;
         subject = nombre;
@@ -20,10 +28,6 @@ Certificado :: Certificado(uint32_t sn,std::string &nombre,std::string &fecha_in
         }
         modulo = mod;
         exponente = exp;
-}
-
-Certificado :: ~Certificado() {
-    
 }
 
 std::string Certificado :: getHexadecimal(int largo,int n) {
@@ -108,4 +112,93 @@ uint8_t Certificado :: getExponente() {
 
 std::string Certificado :: getCertificado() {
     return this->certificado_completo;
+}
+
+//void Certificado :: asignarCadena(size_t pos_inicial,size_t pos_final) {
+//    
+//} 
+//void Certificado :: extraerDato(std::string inicio,puntero) {
+//
+//} 
+
+void Certificado :: extraerSubject() {//Estoy copiando codigo a morir, ver como pasar this-> como parametro;
+    std::string subject = "subject: ";
+    size_t pos_inicial = this->certificado_completo.find(subject) +subject.size();
+    std::string salto = "\n";
+    size_t pos_final = this->certificado_completo.find(salto,pos_inicial);
+    for (size_t i = pos_inicial; i<pos_final; i++) {
+      this->subject += this->certificado_completo[i];
+    }
+}
+
+void Certificado :: extraerSerialNumber() {
+    std::string sn = "serial number: ";
+    size_t pos_inicial = this->certificado_completo.find(sn) + sn.size();
+    std::string parentesis = " (";
+    size_t pos_final = this->certificado_completo.find(parentesis,pos_inicial);
+    sn = "";
+    for (size_t i = pos_inicial; i<pos_final; i++) {
+      sn += this->certificado_completo[i];
+    }
+    this->serial_number = (uint32_t)std::stoi(sn);
+}
+
+void Certificado :: extraerIssuer() {
+    std::string issuer = "issuer: ";
+    size_t pos_inicial = this->certificado_completo.find(issuer) +issuer.size();
+    std::string salto = "\n";
+    size_t pos_final = this->certificado_completo.find(salto,pos_inicial);
+    for (size_t i = pos_inicial; i<pos_final; i++) {
+      this->issuer += this->certificado_completo[i];
+    }
+}
+
+void Certificado :: extraerFechas() {
+    std::string f_inicial = "not before: ";
+    size_t pos_inicial = this->certificado_completo.find(f_inicial) +f_inicial.size();
+    std::string salto = "\n";
+    size_t pos_final = this->certificado_completo.find(salto,pos_inicial);
+    for (size_t i = pos_inicial; i<pos_final; i++) {
+      this->fecha_inicial += this->certificado_completo[i];
+    }
+    std::string f_final = "not after: ";
+    pos_inicial = this->certificado_completo.find(f_final) +f_final.size();
+    pos_final = this->certificado_completo.find(salto,pos_inicial);
+    for (size_t i = pos_inicial; i<pos_final; i++) {
+      this->fecha_final += this->certificado_completo[i];
+    }
+}
+
+void Certificado :: extraerModulo() {
+    std::string modulus = "modulus: ";
+    size_t pos_inicial = this->certificado_completo.find(modulus) +modulus.size();
+    std::string parentesis = " (";
+    size_t pos_final = this->certificado_completo.find(parentesis,pos_inicial);
+    std::string mod;
+    for (size_t i = pos_inicial; i<pos_final; i++) {
+      mod += this->certificado_completo[i];
+    }
+    this->modulo = (uint16_t)std::stoi(mod);
+}
+
+void Certificado :: extraerExponente() {
+    std::string exponent = "exponent: ";
+    size_t pos_inicial = this->certificado_completo.find(exponent) +exponent.size();
+    std::string parentesis = " (";
+    size_t pos_final = this->certificado_completo.find(parentesis,pos_inicial);
+    std::string exp;
+    for (size_t i = pos_inicial; i<pos_final; i++) {
+      exp += this->certificado_completo[i];
+    }
+    this->exponente = (uint16_t)std::stoi(exp);
+} 
+
+void Certificado :: setCertificado(std::string &certificado) {
+    this->certificado_completo = certificado.substr(0,certificado.size()-1);
+    this->extraerSerialNumber();
+    this->extraerSubject();
+    this->extraerIssuer();
+    this->extraerFechas();
+    this->extraerModulo();
+    this->extraerExponente();
 }

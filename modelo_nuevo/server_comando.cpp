@@ -1,5 +1,6 @@
 #include "server_comando.h"
 #include "common_certificado.h"
+#include "common_fecha.h"
 
 ComandoServidor :: ComandoServidor() : protocolo() {
 }
@@ -8,7 +9,78 @@ ComandoServidor :: ~ComandoServidor() {
     /*No hace nada*/
 }
 
-bool ComandoServidor :: comandoRevoke() {
+bool ComandoServidor :: subjectPerteneceAlIndice(SocketConnect &socket,Indice &indice,const std::string &subject) {
+    uint8_t rta;
+    if (indice.clientePerteneceAlIndice(subject)) {
+        rta = 0;
+        this->protocolo.enviarInt8(rta,socket);
+        return true;        
+    } else {
+        rta = 1;
+        this->protocolo.enviarInt8(rta,socket);
+        return false;        
+    }
+}
+
+bool ComandoServidor :: verificarHash(Certificado &certificado,Indice &indice,
+    Claves &claves, uint32_t huella) {
+
+    std::string subject = certificado.getSubject();
+
+    uint16_t mod_cliente = indice.getModuloCliente(subject); 
+    uint8_t exp_cliente = indice.getExponenteCliente(subject);
+
+    huella = certificado.calcularRsa(huella, exp_cliente, mod_cliente);
+    
+    uint16_t mod_servidor = claves.getModulo();
+    uint8_t exp_servidor = claves.getExponentePrivado();
+
+    huella = certificado.calcularRsa(huella, exp_servidor, mod_servidor);
+
+    uint32_t hash = certificado.calcularHash();
+
+    return hash == huella;    
+}
+
+bool ComandoServidor :: comandoRevoke(SocketConnect &socket,Indice &indice,Claves &claves) {
+    uint32_t sn = 0;
+    if (!this->protocolo.recibirInt32(&sn,socket)) return false;
+
+    std::string subject;
+    if (!this->protocolo.recibirString(subject,socket)) return false;
+
+    if (!this->subjectPerteneceAlIndice(socket,indice,subject)) return false; 
+
+    std::string issuer;
+    if (!this->protocolo.recibirString(issuer,socket)) return false;
+
+    std::string fecha_incial;
+    if (!this->protocolo.recibirString(fecha_incial,socket)) return false;
+
+    std::string fecha_final;
+    if (!this->protocolo.recibirString(fecha_final,socket)) return false;
+
+    uint16_t modulo = -1;
+    if (!this->protocolo.recibirInt16(&modulo,socket)) return false;
+
+    uint8_t exponente = 0;
+    if (!this->protocolo.recibirInt8(&exponente,socket)) return false;
+
+    uint32_t huella = -1;
+    if (!this->protocolo.recibirInt32(&huella,socket)) return false;
+
+    Certificado certificado;
+    certificado.setAtributos(sn,subject,fecha_incial,fecha_final,modulo,exponente);
+    certificado.parser();
+
+    uint8_t rta = 0;
+    if (!this->verificarHash(certificado,indice,claves,huella)) {
+        rta = 2;
+        this->protocolo.enviarInt8(rta,socket);
+        return false;
+    } 
+    indice.eliminarCliente(subject);
+    this->protocolo.enviarInt8(rta,socket);
     return true;
 }
 
@@ -69,11 +141,17 @@ bool ComandoServidor :: comandoNew(SocketConnect &socket,Indice &indice,Claves &
         this->protocolo.enviarInt8(rta,socket);
     }
 
-    if (fecha_inicial == "") std::cout << "NO HAY FECHAS" << std::endl; //aca creo fechas
+    if (fecha_inicial == "") {
+        Fecha fecha;
+        fecha_inicial = fecha.getFechaActual();
+        fecha_final = fecha.getFecha30DiasDespues();
+    }
 
-    uint32_t i = indice.getIndice();   //funcion aparte que se encargue de calcular todo
-    Certificado certificado(i,subject,fecha_inicial,fecha_final,mod,exp);
+    uint32_t i = indice.getIndice();  
+    Certificado certificado;
+    certificado.setAtributos(i,subject,fecha_inicial,fecha_final,mod,exp);
     certificado.parser();
+    
     uint16_t hash = certificado.calcularHash();
     uint32_t rsa = certificado.calcularRsa(hash,claves.getExponentePrivado(),claves.getModulo());
     rsa = certificado.calcularRsa(rsa,exp,mod);
@@ -88,13 +166,13 @@ bool ComandoServidor :: comandoNew(SocketConnect &socket,Indice &indice,Claves &
 }
 
 bool ComandoServidor :: inciarModo(SocketConnect &socket,Indice &indice,Claves &claves) { //este probablemente sea el metodo run
-    uint8_t modo; //incio en modo invalido
+    uint8_t modo = -1; //incio en modo invalido
     this->protocolo.recibirInt8(&modo,socket);
     if (modo == 0) {
         if (!this->comandoNew(socket,indice,claves)) return 1;
         return 0;
     } else if (modo == 1) {
-        if (!this->comandoRevoke()) return 1;
+        if (!this->comandoRevoke(socket,indice,claves)) return 1;
         return 0;
     } else {
         return 1;

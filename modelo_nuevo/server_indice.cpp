@@ -72,7 +72,6 @@ uint32_t Indice :: getIndice() {
 bool Indice :: clientePerteneceAlIndice(const std::string &cliente) {
     for (std::map<std::string,Cliente*>::iterator it=clientes.begin(); it!=clientes.end(); ++it) {
         if (cliente == it->second->getNombre()) {
-            std::cout << "Se encontro el cliente\n"; //borrar
             return true;
         }
     }
@@ -110,12 +109,21 @@ void Indice :: escribirArchivo() {
     }
 }
 
-bool Indice :: eliminarCliente(const std::string nombre) {
+bool Indice :: eliminarCliente(const std::string &nombre) {
     if (this->clientePerteneceAlIndice(nombre)) {
         Cliente *cliente = this->clientes[nombre];
         delete cliente;
         clientes.erase(nombre);
+        this->decrementarIndice();
         return true;
     }
     return false;
+}
+
+uint16_t Indice :: getModuloCliente(const std::string &subject) {
+    return (uint16_t)std::stoi(this->clientes[subject]->getModulo());
+}
+
+uint8_t Indice :: getExponenteCliente(const std::string &subject) {
+    return (uint8_t)std::stoi(this->clientes[subject]->getExponente());
 }

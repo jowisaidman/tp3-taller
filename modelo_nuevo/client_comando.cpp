@@ -14,7 +14,8 @@ bool ComandoCliente :: enviarModo(uint8_t m,SocketConnect &socket) {
 }
 
 void ComandoCliente :: guardarCertificado(Certificado &certificado) {
-    std::ofstream ofs(certificado.getSubject(), std::ofstream::out);
+    std::string nombre_archivo = certificado.getSubject() + ".cert";
+    std::ofstream ofs(nombre_archivo, std::ofstream::out);
     ofs << certificado.getCertificado();
     ofs.close();
 }
@@ -25,7 +26,7 @@ bool ComandoCliente :: comandoNewRecibirRespuesta(SocketConnect &socket,
     if(!this->protocolo.recibirInt8(&se_agrego, socket)) return false;
 
     if (se_agrego == 1) {
-        std::cout << "El cliente ya existe" << std::endl;
+        std::cout << "El cliente ya existe" << std::endl; 
         return false;
     }
 
@@ -53,7 +54,8 @@ bool ComandoCliente :: comandoNewRecibirRespuesta(SocketConnect &socket,
     uint32_t huella = -1;
     if (!this->protocolo.recibirInt32(&huella,socket)) return false; 
 
-    Certificado certificado(sn,subject,fecha_inicial,fecha_final,mod,exp);
+    Certificado certificado;
+    certificado.setAtributos(sn,subject,fecha_inicial,fecha_final,mod,exp);
     certificado.parser();
     
     uint8_t exp_privado_cliente = clave_cliete.getExponentePrivado();
@@ -62,7 +64,7 @@ bool ComandoCliente :: comandoNewRecibirRespuesta(SocketConnect &socket,
 
     uint32_t hash = certificado.calcularHash();
     uint32_t rsa = certificado.calcularRsa(huella,exp_privado_cliente,mod);
-    rsa = certificado.calcularRsa(rsa,exp_servidor,mod_servidor); //falta verificar que coicidan e imprmir, se deberia hacer funcion aparte
+    rsa = certificado.calcularRsa(rsa,exp_servidor,mod_servidor); //falta verificar que coicidan e imprmir, se deberia hacer funcion aparte (y usarla para revoke)
     std::cout << "Huella del servidor: " << huella << std::endl;
     std::cout << "Hash del servidor: " << hash << std::endl;
     std::cout << "Hash calculado " << rsa << std::endl;
@@ -74,8 +76,8 @@ bool ComandoCliente :: comandoNew(SocketConnect &socket ,RequestCliente &request
      ClaveCliente &claves_cliente, ClavePublicaServer &clave_server) {
     uint8_t m = 0;
     if(!this->enviarModo(m,socket)) return false;
-    std::string nombre = request.getNombre();
 
+    std::string nombre = request.getNombre();
     if (protocolo.enviarString(nombre,socket) == -1) return false; //falta funcion string que envie de a pedazos y otra que reciba de a pedazos dentro de protocolo
 
     uint16_t mod = claves_cliente.getModulo();
@@ -103,7 +105,70 @@ bool ComandoCliente :: comandoNew(SocketConnect &socket ,RequestCliente &request
     return true;
 }
 
-bool comandoRevoke(SocketConnect &socket,RequestCliente &request,
+bool ComandoCliente :: subjectEnviadoEsValido(SocketConnect &socket) {
+    uint8_t rta = 3;//inicio invadio
+    if (!this->protocolo.recibirInt8(&rta,socket)) return false;
+    return rta == 0;
+}
+
+bool ComandoCliente :: comandoRevoke(SocketConnect &socket,ArchivoCertificado &arch_certificado,
     ClaveCliente &claves_cliente,ClavePublicaServer &clave_server) {
-        return true;
+
+    Certificado certificado;
+    std::string certificado_texto = arch_certificado.getCertificado();
+    certificado.setCertificado(certificado_texto);
+
+    uint8_t m = 1;//aca falta un try except
+    if (!this->enviarModo(m,socket)) return false;
+
+    uint32_t sn = certificado.getSerialNumber();
+    if (!this->protocolo.enviarInt32(sn,socket)) return false;
+
+    std::string subject = certificado.getSubject();
+    if (!this->protocolo.enviarString(subject,socket)) return false;
+
+    if (!this->subjectEnviadoEsValido(socket)) {
+        std::cout << "El subject que envie no existe" << std::endl;
+        return false;
     }
+
+    std::string issuer = certificado.getIssuer();
+    if (!this->protocolo.enviarString(issuer,socket)) return false;
+
+    std::string fecha_incial = certificado.getFechaInicio();
+    if (!this->protocolo.enviarString(fecha_incial,socket)) return false;
+
+    std::string fecha_final= certificado.getFechaFin();
+    if (!this->protocolo.enviarString(fecha_final,socket)) return false;
+
+    uint16_t modulo = certificado.getModulo();
+    if (!this->protocolo.enviarInt16(modulo,socket)) return false;
+
+    uint8_t exponente = certificado.getExponente();
+    if (!this->protocolo.enviarInt8(exponente,socket)) return false;
+
+    uint32_t hash = certificado.calcularHash(); //Esto se deberia hacer en una funcion aparte
+    std::cout << "Hash calculado: " << hash << std::endl;
+    uint8_t exp_cliente = claves_cliente.getExponentePrivado();
+    uint16_t mod_cliente = claves_cliente.getModulo();
+    uint32_t rsa = certificado.calcularRsa(hash,exp_cliente,mod_cliente);
+    std::cout << "Hash encriptado con la clave prívada: " << rsa << std::endl;
+    uint8_t exp_servidor = clave_server.getExponente();
+    uint16_t mod_servidor = clave_server.getModulo();
+    rsa = certificado.calcularRsa(rsa,exp_servidor,mod_servidor);
+    std::cout << "Huella enviada: " << rsa << std::endl;
+
+    if (!this->protocolo.enviarInt32(rsa,socket)) return false;
+
+    return true;
+}
+
+
+    //std::cout << "Sn: "<< sn <<std::endl;
+    //std::cout << "Suj: "<< subject <<std::endl;
+    //std::cout << "Issu: "<< issuer<<std::endl;
+    //std::cout << "fi: "<< fecha_incial <<std::endl;
+    //std::cout << "ff: "<< fecha_final <<std::endl;
+    //std::cout << "mod: "<< (int)modulo<<std::endl;
+    //std::cout << "exp: "<< (int)exponente <<std::endl;
+

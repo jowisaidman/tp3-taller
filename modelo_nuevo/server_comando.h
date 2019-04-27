@@ -12,9 +12,13 @@ class ComandoServidor {
     private:
         Protocolo protocolo;
         bool comandoNew(SocketConnect &socket,Indice &indice,Claves &claves);
-        bool comandoRevoke();
+        bool comandoRevoke(SocketConnect &socket,Indice &indice,Claves &claves);
         bool comandoNewEnviarRespuesta(SocketConnect &socket,
             Certificado &certificado,const uint32_t &rsa);
+        bool subjectPerteneceAlIndice(SocketConnect &socket,Indice &indice,
+            const std::string &subject);
+        bool verificarHash(Certificado &certificado,Indice &indice,
+            Claves &claves,uint32_t huella);
         
 
 

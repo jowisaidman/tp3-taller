@@ -30,8 +30,10 @@ class Indice { //no hereda de archivo porque a diferencia de los demas parseo mi
         void agregarNuevoCliente(std::string &nombre
         ,uint8_t exponente,uint16_t modulo);
         bool clientePerteneceAlIndice(const std::string &cliente); 
-        bool eliminarCliente(std::string nombre); // ->hay que hacer delete
+        bool eliminarCliente(const std::string &nombre); 
         void escribirArchivo();
+        uint16_t getModuloCliente(const std::string &subject);
+        uint8_t getExponenteCliente(const std::string &subject);
         //void imprimirClientes(); //[HYA QUE BORRAR ESTA FUNCION]
 };
 

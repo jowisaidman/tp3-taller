@@ -6,6 +6,7 @@
 #include "client_request.h"
 #include "client_clave_server.h"
 #include "client_clave.h"
+#include "client_archivo_certificado.h"
 #include <string>
 
 
@@ -18,6 +19,7 @@ class ComandoCliente {
         bool comandoNewRecibirRespuesta(SocketConnect &socket,Protocolo &protocolo,
         ClavePublicaServer &clave_server,ClaveCliente &clave_cliete);
         void guardarCertificado(Certificado &certificado);
+        bool subjectEnviadoEsValido(SocketConnect &socket);
 
 
     public:
@@ -25,7 +27,7 @@ class ComandoCliente {
         ~ComandoCliente();
         bool comandoNew(SocketConnect &socket,RequestCliente &request
         , ClaveCliente &claves_cliente,ClavePublicaServer &clave_server);
-        bool comandoRevoke(SocketConnect &socket,RequestCliente &request,
+        bool comandoRevoke(SocketConnect &socket,ArchivoCertificado &certificado,
          ClaveCliente &claves_cliente,ClavePublicaServer &clave_server);
 };
 
