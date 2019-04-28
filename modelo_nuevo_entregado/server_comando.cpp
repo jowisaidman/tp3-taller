@@ -71,7 +71,6 @@ bool ComandoServidor :: comandoRevoke(SocketConnect &socket,
     if (!this->verificarHash(certificado,indice,claves,huella)) {
         rta = 2;
         this->protocolo.enviarInt8(rta,socket);
-        indice.incrementarIndice();
         return false;
     } 
     indice.eliminarCliente(subject);

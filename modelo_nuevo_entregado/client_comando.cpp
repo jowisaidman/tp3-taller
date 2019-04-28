@@ -163,7 +163,7 @@ bool ComandoCliente :: comandoRevoke(SocketConnect &socket,
     uint8_t exp_cliente = claves_cliente.getExponentePrivado();
     uint16_t mod_cliente = claves_cliente.getModulo();
     uint32_t rsa = certificado.calcularRsa(hash,exp_cliente,mod_cliente);
-    std::cout << "Hash encriptado con la clave prívada: " << rsa << std::endl;
+    std::cout <<"Hash encriptado con la clave privada: "<< rsa << std::endl;
     uint8_t exp_servidor = clave_server.getExponente();
     uint16_t mod_servidor = clave_server.getModulo();
     rsa = certificado.calcularRsa(rsa,exp_servidor,mod_servidor);

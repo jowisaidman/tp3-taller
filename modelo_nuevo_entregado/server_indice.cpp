@@ -109,7 +109,6 @@ bool Indice :: eliminarCliente(const std::string &nombre) {
         Cliente *cliente = this->clientes[nombre];
         delete cliente;
         clientes.erase(nombre);
-        this->incrementarIndice();
         return true;
     }
     return false;
