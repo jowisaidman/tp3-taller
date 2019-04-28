@@ -1,0 +1,85 @@
+==00:00:00:00.000 18736== Memcheck, a memory error detector
+==00:00:00:00.000 18736== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==00:00:00:00.000 18736== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==00:00:00:00.000 18736== Command: ./client 127.0.0.1 8080 new client0.req client0.keys server.pubkeys
+==00:00:00:00.000 18736== Parent PID: 18726
+==00:00:00:00.000 18736== 
+==00:00:00:34.585 18736== 
+==00:00:00:34.585 18736== Process terminating with default action of signal 2 (SIGINT)
+==00:00:00:34.585 18736==    at 0x53EE7EA: recv (recv.c:28)
+==00:00:00:34.585 18736==    by 0x10BAA4: recv (socket2.h:44)
+==00:00:00:34.585 18736==    by 0x10BAA4: SocketConnect::recibirMensaje(char*, int) (common_socket_connect.cpp:63)
+==00:00:00:34.585 18736==    by 0x1104AB: ComandoCliente::comandoNewRecibirRespuesta(SocketConnect&, Protocolo&, ClavePublicaServer&, ClaveCliente&) (client_comando.cpp:26)
+==00:00:00:34.585 18736==    by 0x110A45: ComandoCliente::comandoNew(SocketConnect&, RequestCliente&, ClaveCliente&, ClavePublicaServer&) (client_comando.cpp:102)
+==00:00:00:34.585 18736==    by 0x10B62B: main (client.cpp:51)
+==00:00:00:34.602 18736== 
+==00:00:00:34.602 18736== FILE DESCRIPTORS: 8 open at exit.
+==00:00:00:34.602 18736== Open file descriptor 7: client0.req
+==00:00:00:34.602 18736==    at 0x570BC8E: open (open64.c:47)
+==00:00:00:34.602 18736==    by 0x5688589: _IO_file_open (fileops.c:189)
+==00:00:00:34.602 18736==    by 0x5688589: _IO_file_fopen@@GLIBC_2.2.5 (fileops.c:281)
+==00:00:00:34.602 18736==    by 0x567AEA9: __fopen_internal (iofopen.c:78)
+==00:00:00:34.602 18736==    by 0x567AEA9: fopen@@GLIBC_2.2.5 (iofopen.c:89)
+==00:00:00:34.602 18736==    by 0x4EEFD2F: std::__basic_file<char>::open(char const*, std::_Ios_Openmode, int) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==00:00:00:34.602 18736==    by 0x4F30259: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==00:00:00:34.602 18736==    by 0x4F308E4: std::basic_fstream<char, std::char_traits<char> >::basic_fstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==00:00:00:34.602 18736==    by 0x111088: RequestCliente::Archivo(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (client_request.h:17)
+==00:00:00:34.602 18736==    by 0x10B60D: main (client.cpp:49)
+==00:00:00:34.602 18736== 
+==00:00:00:34.602 18736== Open AF_INET socket 6: 127.0.0.1:42224 <-> 127.0.0.1:8080
+==00:00:00:34.602 18736==    at 0x571EEC7: socket (syscall-template.S:78)
+==00:00:00:34.602 18736==    by 0x10B945: SocketConnect::conectar() (common_socket_connect.cpp:37)
+==00:00:00:34.602 18736==    by 0x10B4B7: main (client.cpp:39)
+==00:00:00:34.602 18736== 
+==00:00:00:34.602 18736== Open file descriptor 5: server.pubkeys
+==00:00:00:34.602 18736==    at 0x570BC8E: open (open64.c:47)
+==00:00:00:34.602 18736==    by 0x5688589: _IO_file_open (fileops.c:189)
+==00:00:00:34.602 18736==    by 0x5688589: _IO_file_fopen@@GLIBC_2.2.5 (fileops.c:281)
+==00:00:00:34.602 18736==    by 0x567AEA9: __fopen_internal (iofopen.c:78)
+==00:00:00:34.602 18736==    by 0x567AEA9: fopen@@GLIBC_2.2.5 (iofopen.c:89)
+==00:00:00:34.602 18736==    by 0x4EEFD2F: std::__basic_file<char>::open(char const*, std::_Ios_Openmode, int) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==00:00:00:34.602 18736==    by 0x4F30259: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==00:00:00:34.602 18736==    by 0x4F308E4: std::basic_fstream<char, std::char_traits<char> >::basic_fstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==00:00:00:34.602 18736==    by 0x111058: ClavePublicaServer::Archivo(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (client_clave_server.h:15)
+==00:00:00:34.602 18736==    by 0x10B486: main (client.cpp:29)
+==00:00:00:34.602 18736== 
+==00:00:00:34.602 18736== Open file descriptor 4: client0.keys
+==00:00:00:34.602 18736==    at 0x570BC8E: open (open64.c:47)
+==00:00:00:34.602 18736==    by 0x5688589: _IO_file_open (fileops.c:189)
+==00:00:00:34.602 18736==    by 0x5688589: _IO_file_fopen@@GLIBC_2.2.5 (fileops.c:281)
+==00:00:00:34.602 18736==    by 0x567AEA9: __fopen_internal (iofopen.c:78)
+==00:00:00:34.602 18736==    by 0x567AEA9: fopen@@GLIBC_2.2.5 (iofopen.c:89)
+==00:00:00:34.602 18736==    by 0x4EEFD2F: std::__basic_file<char>::open(char const*, std::_Ios_Openmode, int) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==00:00:00:34.602 18736==    by 0x4F30259: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==00:00:00:34.602 18736==    by 0x4F308E4: std::basic_fstream<char, std::char_traits<char> >::basic_fstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==00:00:00:34.602 18736==    by 0x111028: ClaveCliente::Archivo(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) (client_clave.h:16)
+==00:00:00:34.602 18736==    by 0x10B457: main (client.cpp:25)
+==00:00:00:34.602 18736== 
+==00:00:00:34.602 18736== Open file descriptor 3: /home/jowi/Desktop/tp3-taller/modelo_nuevo/pruebas/pruebas_sercom/existing-certificate/archivos_entrada_599/valgrind_client1.out
+==00:00:00:34.602 18736==    <inherited from parent>
+==00:00:00:34.602 18736== 
+==00:00:00:34.602 18736== Open file descriptor 2: /dev/pts/1
+==00:00:00:34.602 18736==    <inherited from parent>
+==00:00:00:34.602 18736== 
+==00:00:00:34.602 18736== Open file descriptor 1: /home/jowi/Desktop/tp3-taller/modelo_nuevo/pruebas/pruebas_sercom/existing-certificate/archivos_entrada_599/client1.out
+==00:00:00:34.602 18736==    <inherited from parent>
+==00:00:00:34.602 18736== 
+==00:00:00:34.602 18736== Open file descriptor 0: /home/jowi/Desktop/tp3-taller/modelo_nuevo/pruebas/pruebas_sercom/existing-certificate/archivos_entrada_599/client1.in
+==00:00:00:34.603 18736==    <inherited from parent>
+==00:00:00:34.603 18736== 
+==00:00:00:34.603 18736== 
+==00:00:00:34.603 18736== HEAP SUMMARY:
+==00:00:00:34.603 18736==     in use at exit: 26,330 bytes in 10 blocks
+==00:00:00:34.603 18736==   total heap usage: 24 allocs, 14 frees, 99,591 bytes allocated
+==00:00:00:34.603 18736== 
+==00:00:00:34.603 18736== LEAK SUMMARY:
+==00:00:00:34.603 18736==    definitely lost: 0 bytes in 0 blocks
+==00:00:00:34.603 18736==    indirectly lost: 0 bytes in 0 blocks
+==00:00:00:34.603 18736==      possibly lost: 0 bytes in 0 blocks
+==00:00:00:34.603 18736==    still reachable: 26,330 bytes in 10 blocks
+==00:00:00:34.603 18736==         suppressed: 0 bytes in 0 blocks
+==00:00:00:34.603 18736== Reachable blocks (those to which a pointer was found) are not shown.
+==00:00:00:34.603 18736== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==00:00:00:34.603 18736== 
+==00:00:00:34.603 18736== For counts of detected and suppressed errors, rerun with: -v
+==00:00:00:34.603 18736== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
