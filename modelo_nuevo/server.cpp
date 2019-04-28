@@ -48,7 +48,13 @@ int main(int argc, char *argv[]) {
 
     ComandoServidor comando;
 
+    std::string entrada;
+
     comando.inciarModo(*socket_connect,indice,claves);
+    std::cin >> entrada;
+    if (entrada == "q") {
+        entrada = "termino";
+    }
 
     socket_connect->cerrarConexion(); 
     delete socket_connect;

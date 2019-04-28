@@ -19,7 +19,7 @@ class ComandoCliente {
         bool comandoNewRecibirRespuesta(SocketConnect &socket,Protocolo &protocolo,
         ClavePublicaServer &clave_server,ClaveCliente &clave_cliete);
         void guardarCertificado(Certificado &certificado);
-        bool subjectEnviadoEsValido(SocketConnect &socket);
+        uint8_t respuestaDelServidor(SocketConnect &socket);
 
 
     public:

@@ -77,6 +77,7 @@ bool ComandoServidor :: comandoRevoke(SocketConnect &socket,Indice &indice,Clave
     if (!this->verificarHash(certificado,indice,claves,huella)) {
         rta = 2;
         this->protocolo.enviarInt8(rta,socket);
+        indice.incrementarIndice();
         return false;
     } 
     indice.eliminarCliente(subject);
@@ -151,7 +152,7 @@ bool ComandoServidor :: comandoNew(SocketConnect &socket,Indice &indice,Claves &
     Certificado certificado;
     certificado.setAtributos(i,subject,fecha_inicial,fecha_final,mod,exp);
     certificado.parser();
-    
+
     uint16_t hash = certificado.calcularHash();
     uint32_t rsa = certificado.calcularRsa(hash,claves.getExponentePrivado(),claves.getModulo());
     rsa = certificado.calcularRsa(rsa,exp,mod);
@@ -160,7 +161,10 @@ bool ComandoServidor :: comandoNew(SocketConnect &socket,Indice &indice,Claves &
     
     uint8_t rta_del_cliente;
     if (!this->protocolo.recibirInt8(&rta_del_cliente,socket)) return false;
-    if (rta != 0) return false;
+    if (rta_del_cliente != 0) {
+        indice.incrementarIndice();
+        return false;
+    }
     indice.agregarNuevoCliente(subject,exp,mod);
     return true;
 }

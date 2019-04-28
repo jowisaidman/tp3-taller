@@ -55,10 +55,9 @@ void Indice :: leerArchivo() {
     while (archivo >> bf_aux) {
         parser(bf_aux,nombre_cliente,exponente,primer_palabra,es_el_exp,es_el_indice);
     }
-}
-
-void Indice :: decrementarIndice() {
-    indice_archivo--;
+    if (primer_palabra) {
+        this->indice_archivo = 1;
+    }
 }
 
 void Indice :: incrementarIndice() {
@@ -114,7 +113,7 @@ bool Indice :: eliminarCliente(const std::string &nombre) {
         Cliente *cliente = this->clientes[nombre];
         delete cliente;
         clientes.erase(nombre);
-        this->decrementarIndice();
+        this->incrementarIndice();
         return true;
     }
     return false;

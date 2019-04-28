@@ -3,6 +3,7 @@
 #define UINT32_SIZE 4
 
 #include "common_protocolo.h"
+#include <arpa/inet.h>
 
 int Protocolo :: enviarString(std::string &cadena,SocketConnect &socket) {
 	uint32_t tam = (uint32_t)cadena.size();
@@ -36,10 +37,12 @@ int Protocolo :: enviarInt8(uint8_t valor,SocketConnect &socket) {
 }
 
 int Protocolo :: enviarInt16(uint16_t valor,SocketConnect &socket) {
+	valor = htons(valor);
     return socket.enviarMensaje((char *)&valor, UINT16_SIZE);
 }
 
 int Protocolo :: enviarInt32(uint32_t valor,SocketConnect &socket) {
+	valor = htonl(valor); 
     return socket.enviarMensaje((char *)&valor, UINT32_SIZE);
 }
 
@@ -48,11 +51,15 @@ int Protocolo :: recibirInt8(uint8_t *valor,SocketConnect &socket) {
 }
 
 int Protocolo :: recibirInt16(uint16_t *valor,SocketConnect &socket) {
-    return socket.recibirMensaje((char *)valor, UINT16_SIZE);
+	int rta = socket.recibirMensaje((char *)valor, UINT16_SIZE);
+	*valor = ntohs(*valor);
+	return rta;
 }
 
 int Protocolo :: recibirInt32(uint32_t *valor,SocketConnect &socket) {
-    return socket.recibirMensaje((char *)valor, UINT32_SIZE);
+	int rta = socket.recibirMensaje((char *)valor, UINT32_SIZE); 
+    *valor = ntohl(*valor);
+	return rta;
 }
 
 Protocolo :: Protocolo() {

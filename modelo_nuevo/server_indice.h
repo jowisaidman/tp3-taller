@@ -16,8 +16,6 @@ class Indice { //no hereda de archivo porque a diferencia de los demas parseo mi
 
         void agregarCliente(std::string &nombre
         ,std::string &exponente,std::string &modulo);
-        void incrementarIndice();
-        void decrementarIndice();
 
     public:
         Indice(std::string &nombre_archivo);
@@ -34,6 +32,7 @@ class Indice { //no hereda de archivo porque a diferencia de los demas parseo mi
         void escribirArchivo();
         uint16_t getModuloCliente(const std::string &subject);
         uint8_t getExponenteCliente(const std::string &subject);
+        void incrementarIndice();
         //void imprimirClientes(); //[HYA QUE BORRAR ESTA FUNCION]
 };
 

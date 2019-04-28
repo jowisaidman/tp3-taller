@@ -26,7 +26,7 @@ bool ComandoCliente :: comandoNewRecibirRespuesta(SocketConnect &socket,
     if(!this->protocolo.recibirInt8(&se_agrego, socket)) return false;
 
     if (se_agrego == 1) {
-        std::cout << "El cliente ya existe" << std::endl; 
+        std::cout << "Error: ya existe un certificado" << std::endl; 
         return false;
     }
 
@@ -65,6 +65,10 @@ bool ComandoCliente :: comandoNewRecibirRespuesta(SocketConnect &socket,
     uint32_t hash = certificado.calcularHash();
     uint32_t rsa = certificado.calcularRsa(huella,exp_privado_cliente,mod);
     rsa = certificado.calcularRsa(rsa,exp_servidor,mod_servidor); //falta verificar que coicidan e imprmir, se deberia hacer funcion aparte (y usarla para revoke)
+    if (hash != rsa) {
+        std::cout << "Error: los hashes no coinciden." << std::endl;
+        return false;
+    }
     std::cout << "Huella del servidor: " << huella << std::endl;
     std::cout << "Hash del servidor: " << hash << std::endl;
     std::cout << "Hash calculado " << rsa << std::endl;
@@ -105,11 +109,12 @@ bool ComandoCliente :: comandoNew(SocketConnect &socket ,RequestCliente &request
     return true;
 }
 
-bool ComandoCliente :: subjectEnviadoEsValido(SocketConnect &socket) {
+uint8_t ComandoCliente :: respuestaDelServidor(SocketConnect &socket) {
     uint8_t rta = 3;//inicio invadio
     if (!this->protocolo.recibirInt8(&rta,socket)) return false;
-    return rta == 0;
+    return rta;
 }
+
 
 bool ComandoCliente :: comandoRevoke(SocketConnect &socket,ArchivoCertificado &arch_certificado,
     ClaveCliente &claves_cliente,ClavePublicaServer &clave_server) {
@@ -127,8 +132,8 @@ bool ComandoCliente :: comandoRevoke(SocketConnect &socket,ArchivoCertificado &a
     std::string subject = certificado.getSubject();
     if (!this->protocolo.enviarString(subject,socket)) return false;
 
-    if (!this->subjectEnviadoEsValido(socket)) {
-        std::cout << "El subject que envie no existe" << std::endl;
+    if (this->respuestaDelServidor(socket) == 1) {
+        std::cout << "Error: usuario no registrado." << std::endl;
         return false;
     }
 
@@ -160,15 +165,10 @@ bool ComandoCliente :: comandoRevoke(SocketConnect &socket,ArchivoCertificado &a
 
     if (!this->protocolo.enviarInt32(rsa,socket)) return false;
 
+    if (this->respuestaDelServidor(socket) == 2) {
+        std::cout << "Error: los hashes no coinciden." << std::endl;
+        return false;
+    }
+
     return true;
 }
-
-
-    //std::cout << "Sn: "<< sn <<std::endl;
-    //std::cout << "Suj: "<< subject <<std::endl;
-    //std::cout << "Issu: "<< issuer<<std::endl;
-    //std::cout << "fi: "<< fecha_incial <<std::endl;
-    //std::cout << "ff: "<< fecha_final <<std::endl;
-    //std::cout << "mod: "<< (int)modulo<<std::endl;
-    //std::cout << "exp: "<< (int)exponente <<std::endl;
-
