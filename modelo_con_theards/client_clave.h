@@ -14,7 +14,11 @@ class ClaveCliente : public Archivo {
 
     public:
         using Archivo::Archivo;
+
+        //Se encarga de parsear correctamente los datos
+        //del archivo leido
         void parser();
+        
         uint8_t getExponentePublico();
         uint8_t getExponentePrivado();
         uint16_t getModulo();

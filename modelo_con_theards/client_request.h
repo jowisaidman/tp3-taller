@@ -15,6 +15,9 @@ class RequestCliente : public Archivo {
  
     public:
         using Archivo::Archivo;
+
+        //Se encarga de parsear correctamente los datos
+        //del archivo leido.
         void parser();
         bool ingresoFechas();
         std::string getNombre();

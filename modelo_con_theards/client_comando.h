@@ -15,7 +15,6 @@ class ComandoCliente {
         Protocolo protocolo;
 
         bool enviarModo(uint8_t m,SocketConnect &socket);
-        //bool enviarNombre(std::string &nombre, SocketConnect &socket);
         bool comandoNewRecibirRespuesta(SocketConnect &socket,Protocolo
           &protocolo, ClavePublicaServer &clave_server,ClaveCliente 
           &clave_cliete);
@@ -26,8 +25,16 @@ class ComandoCliente {
     public:
         ComandoCliente();
         ~ComandoCliente();
+
+        //Recibe como parametro un SocketConnect, RequestCliente,
+        //ClaveCliente y ClavePublicaServer. Se encarga de que se 
+        //ejecute correctamente el comando new del cliente.
         bool comandoNew(SocketConnect &socket,RequestCliente &request
         , ClaveCliente &claves_cliente,ClavePublicaServer &clave_server);
+
+        //Recibe como parametro un SocketConnect, RequestCliente,
+        //ClaveCliente y ClavePublicaServer. Se encarga de que se 
+        //ejecute correctamente el comando revoke del cliente.        
         bool comandoRevoke(SocketConnect &socket,ArchivoCertificado 
           &certificado,ClaveCliente &claves_cliente,ClavePublicaServer 
           &clave_server);

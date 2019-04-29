@@ -12,7 +12,11 @@ class ArchivoCertificado : public Archivo {
  
     public:
         using Archivo::Archivo;
+
+        //Se encarga de parsear correctamente los datos del 
+        //archivo leido
         void parser();
+        
         std::string getCertificado();
 };
 
