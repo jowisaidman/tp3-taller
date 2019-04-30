@@ -1,4 +1,5 @@
 #include <string>
+#include <mutex>
 #include "server_comando.h"
 #include "common_certificado.h"
 #include "common_fecha.h"
@@ -10,13 +11,14 @@ ComandoServidor :: ~ComandoServidor() {
     /*No hace nada*/
 }
 
-bool ComandoServidor :: verificarHash(Certificado &certificado,Indice &indice,
+int ComandoServidor :: verificarHash(Certificado &certificado,Indice &indice,
     Claves &claves, uint32_t huella) {
 
     std::string subject = certificado.getSubject();
-
     uint16_t mod_cliente = indice.getModuloCliente(subject); 
     uint8_t exp_cliente = indice.getExponenteCliente(subject);
+
+    if (mod_cliente == 0 && exp_cliente == 0) return 1;
 
     huella = certificado.calcularRsa(huella, exp_cliente, mod_cliente);
     
@@ -26,8 +28,8 @@ bool ComandoServidor :: verificarHash(Certificado &certificado,Indice &indice,
     huella = certificado.calcularRsa(huella, exp_servidor, mod_servidor);
 
     uint32_t hash = certificado.calcularHash();
-
-    return hash == huella;    
+    if (hash != huella) return 2;
+    return 0;    
 }
 
 bool ComandoServidor :: comandoRevoke(SocketConnect &socket,
@@ -63,17 +65,16 @@ bool ComandoServidor :: comandoRevoke(SocketConnect &socket,
 
     uint8_t rta = 0;
 
-    if (!indice.clientePerteneceAlIndice(subject)) {
-        rta = 1;
-        this->protocolo.enviarInt8(rta,socket);
-        return false; 
-    }
-    if (!this->verificarHash(certificado,indice,claves,huella)) {
+    if (this->verificarHash(certificado,indice,claves,huella) == 2) {
         rta = 2;
         this->protocolo.enviarInt8(rta,socket);
         return false;
-    } 
-    indice.eliminarCliente(subject);
+    }
+    if (!indice.eliminarSiPertenece(subject)) {
+        rta = 1;
+        this->protocolo.enviarInt8(rta,socket);
+        return false;         
+    }
     this->protocolo.enviarInt8(rta,socket);
     return true;
 }
@@ -107,7 +108,6 @@ bool ComandoServidor :: comandoNewEnviarRespuesta(SocketConnect &socket,
         return true;
 }
 
-//falta una funcion que recibe los datos
 bool ComandoServidor :: comandoNew(SocketConnect &socket,
     Indice &indice,Claves &claves) { 
     std::string subject;
@@ -128,7 +128,7 @@ bool ComandoServidor :: comandoNew(SocketConnect &socket,
     if (!this->protocolo.recibirString(fecha_final,socket)) return false;
 
     uint8_t rta;
-    if (indice.clientePerteneceAlIndice(subject)) {
+    if (!indice.agregarSiNoPertenece(subject,exp,mod)) {
         rta = 1;
         this->protocolo.enviarInt8(rta,socket);
         return false;
@@ -142,8 +142,7 @@ bool ComandoServidor :: comandoNew(SocketConnect &socket,
         fecha_inicial = fecha.getFechaActual();
         fecha_final = fecha.getFecha30DiasDespues();
     }
-
-    uint32_t i = indice.getIndice();  
+    uint32_t i = indice.getIndiceCliente(subject);  
     Certificado certificado;
     certificado.setAtributos(i,subject,fecha_inicial,fecha_final,mod,exp);
     certificado.parser();
@@ -152,20 +151,17 @@ bool ComandoServidor :: comandoNew(SocketConnect &socket,
     uint32_t rsa = certificado.calcularRsa(hash,claves.getExponentePrivado(),
       claves.getModulo());
     rsa = certificado.calcularRsa(rsa,exp,mod);
-
     if (!this->comandoNewEnviarRespuesta(socket,certificado,rsa)) return false;
-    
     uint8_t rta_del_cliente;
     if (!this->protocolo.recibirInt8(&rta_del_cliente,socket)) return false;
     if (rta_del_cliente != 0) {
-        indice.incrementarIndice();
+        indice.eliminarDeEspera(subject);
         return false;
     }
-    indice.agregarNuevoCliente(subject,exp,mod);
+    indice.pasarClienteDeEsperaAIndice(subject);
     return true;
 }
 
-//este probablemente sea el metodo run
 bool ComandoServidor :: inciarModo(SocketConnect &socket,
     Indice &indice,Claves &claves) {
     uint8_t modo = -1; //incio en modo invalido

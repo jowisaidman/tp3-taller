@@ -9,7 +9,7 @@ SocketAccept :: SocketAccept() {
 }
 
 SocketAccept :: ~SocketAccept() {
-	shutdown(skt,SHUT_RDWR); // cambie esto
+	shutdown(skt,SHUT_RDWR);
     close(skt);
     skt = -1;
     s = -1;
@@ -83,6 +83,5 @@ SocketConnect *SocketAccept :: acceptSocket() {
 		return nullptr;
 	}
 	return new SocketConnect(skt_aceptado);
-} //tiene que ser creado aca, debe devolver un 
-//puntero y hacer un new y despues deletearlo 
-//cuando termine la conexion
+} 
+

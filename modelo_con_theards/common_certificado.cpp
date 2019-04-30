@@ -75,10 +75,6 @@ void Certificado :: parser() {
     agregegarPublicKeyInfo();
 }
 
-void Certificado :: imprmirCertificado() { //HAT QUE BORRAR ESTOO
-    std::cout << certificado_completo << std::endl;
-}
-
 uint16_t Certificado :: calcularHash() {
     Hash hash;
     return hash.calcularHash(certificado_completo);

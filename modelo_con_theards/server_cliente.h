@@ -9,14 +9,16 @@ class Cliente {
         std::string nombre;
         std::string modulo;
         std::string exponente;
+        uint32_t indice;
 
     public:
-        Cliente(std::string nombre,std::string exp,std::string mod);
+        Cliente(std::string nombre,std::string exp,std::string mod,
+            uint32_t indice);
         ~Cliente();
-        //void imprimirCliente(); //HAY QUE BORRAR ESTA FUNCION
         std::string getExponente();
         std::string getNombre();
         std::string getModulo();
+        uint32_t getIndice();
         bool operator==(const Cliente& otro) const;
 };
 

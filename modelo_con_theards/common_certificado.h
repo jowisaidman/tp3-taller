@@ -29,10 +29,18 @@ class Certificado {
     public:
         Certificado();
         ~Certificado();
+
+        //Arma el certificado en el formato pedido. El certificado
+        //debe tener todos los campos con informacion valida.
         void parser();
+
+        //Calcula el hash de certificado_completo
         uint16_t calcularHash();
+
+        //Calcula el rsa del certificado.
         uint32_t calcularRsa(const uint32_t &hash ,
           const uint8_t &exp, const uint16_t &mod);
+
         uint32_t getSerialNumber();
         std::string getSubject();
         std::string getIssuer();
@@ -40,7 +48,6 @@ class Certificado {
         std::string getFechaFin();
         uint16_t getModulo();
         uint8_t getExponente();
-        void imprmirCertificado();
         std::string getCertificado();
         void setAtributos(uint32_t sn, std::string &nombre,
          std::string &fecha_inicio ,std::string &fecha_fin,

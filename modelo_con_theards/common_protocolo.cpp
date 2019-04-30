@@ -9,9 +9,9 @@
 int Protocolo :: enviarString(std::string &cadena,SocketConnect &socket) {
 	uint32_t tam = (uint32_t)cadena.size();
 	char cad[50];
-	strncpy(cad, cadena.data(),cadena.size());//no
+	strncpy(cad, cadena.data(),cadena.size());
 	int env_tam = this->enviarInt32(tam,socket);
-	int env_cad =  socket.enviarMensaje(cad,tam);//cad.c_string
+	int env_cad =  socket.enviarMensaje(cad,tam);
 	if (env_tam == -1 or env_cad == -1) {
 		return -1;
 	} else {

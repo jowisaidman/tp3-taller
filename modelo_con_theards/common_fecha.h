@@ -18,10 +18,11 @@ class Fecha {
     public:
         Fecha();
         ~Fecha();
+        //Devuelve la fecha actual.
         std::string getFechaActual();
+
+        //Devuelve la fecha 30 dias despues de la fecha actual
         std::string getFecha30DiasDespues();
-        //bool operador =
-        //constructor por movimiento?
 };
 
 #endif

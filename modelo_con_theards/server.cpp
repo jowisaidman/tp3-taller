@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
     delete hilo_aceptador;
     
     indice.escribirArchivo();
+   //std::cout << "LLega hasta aca\n";
     return 0;
 }
 

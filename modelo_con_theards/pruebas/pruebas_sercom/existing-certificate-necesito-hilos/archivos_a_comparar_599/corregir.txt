@@ -1,5 +1,0 @@
-hay que agregar el cliente a los datos del servidor
-hay que aumentar el indice del archivo indice
-hay que usar htons
-try y except para cuando envio y recibo varias cosas
-try y except para cuando abro archivos

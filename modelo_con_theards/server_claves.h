@@ -13,6 +13,9 @@ class Claves : public Archivo {
 
     public:
         using Archivo::Archivo;
+
+        //Se encarga de parsear correctamente los datos del 
+        //archivo leido
         void parser();
         uint8_t getModulo();
         uint16_t getExponentePrivado();

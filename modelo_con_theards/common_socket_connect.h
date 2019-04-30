@@ -26,9 +26,16 @@ class SocketConnect {
         explicit SocketConnect(int socket);
         bool addrinfo(const char *hostn, const char *srvn);
         bool conectar();
+
+        //Cierra la conexion del socket.
         void cerrarConexion();
         ~SocketConnect();
+        //Recibe un string y un int.
+        //Envia un mensaje al socket el cual esta conectado.
         int enviarMensaje(char *buf, int tam);
+
+        //Recibe un string y un int.
+        //Espera un mensaje del socket al cual esta conectado.
         int recibirMensaje(char *buf, int tam);
 };
 
