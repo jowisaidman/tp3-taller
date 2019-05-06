@@ -1,6 +1,0 @@
-==00:00:00:00.000 18729== Memcheck, a memory error detector
-==00:00:00:00.000 18729== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==00:00:00:00.000 18729== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==00:00:00:00.000 18729== Command: ./server 8080 server.keys index.txt
-==00:00:00:00.000 18729== Parent PID: 18726
-==00:00:00:00.000 18729== 

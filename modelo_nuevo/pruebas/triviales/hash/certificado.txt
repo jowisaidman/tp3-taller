@@ -1,5 +1,0 @@
-certificate: \n\t serial number: 11 (0x0000000b) \n\t subject: Federico Manuel Gomez Peter \n\t issuer: Taller de programacion 1 \n\t  validity: \n\t\t not before: Mar 28 21:33:04 2019 \n\t\t not after: May 27 21:33:04 2019 \n\t subject public key info: \n\t\t modulus: 253 (0x00fd) \n\t\t exponent: 17 (0x11) 
-
-certificate:​ \n\t​ serial number: 11 (0x0000000b)​ \n\t​ subject: Federico Manuel Gomez Peter​ \n\t​ issuer: Taller de
-programacion 1​ \n\t​ validity:​ \n\t\t​ not before: Mar 28 21:33:04 2019​ \n\t\t​ not after: May 27 21:33:04
-2019​ \n\t​ subject public key info:​ \n\t\t​ modulus: 253 (0x00fd)​ \n\t\t​ exponent: 17 (0x11)
