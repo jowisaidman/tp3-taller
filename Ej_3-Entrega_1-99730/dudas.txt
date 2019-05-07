@@ -1,0 +1,7 @@
+La forma de parsear comandos no escala, podría haber una entidad que se encargue de este proceso tanto en el cliente como en el servidor.(?)
+Utilizar polimorfismo -> en la sobre carga de operadores o algun lado mas?
+Hardcoding de cantidad y posición de argumentos, y códigos de protocolo. -> Deberia crear una cte con la cantidad de argumentos a recibir?
+No llamar explícitamente al destructor de SocketAccept-> Esto se arregla creando una funcion cerrar conexion que se encargue de evaluar si no esta cerrado, cerrarlo.
+Falta verificar los clientes que terminaron su ejecución para eliminarlos del vector de punteros a Comunicadores y que no crezca indefinidamente -> esto lo quise hacer pero me estaba rompiendo, puede que necesite usar una lista porque el vector me estaba reallocando todos los hilos y si el hilo ya estaba corriendo rompia?
+
+
