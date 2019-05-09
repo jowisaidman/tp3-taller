@@ -12,7 +12,7 @@ class Protocolo {
         void enviarInt32(uint32_t num);
         void recibirInt32(uint32_t *num);
     public:
-        Protocolo(SocketConnect *socket);
+        explicit Protocolo(SocketConnect *socket);
         ~Protocolo() = default;
         Protocolo& operator>>(std::string &cadena);
         Protocolo& operator>>(uint8_t &num);

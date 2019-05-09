@@ -27,6 +27,8 @@ class Certificado {
         void extraerExponente();  
         void asignarCadena(size_t pos_inicial,size_t pos_final,
           std::string &cadena);
+        void calcularPosicion(size_t &pos_inicial,size_t &pos_final,
+          std::string &inicio, std::string &fin);
  
     public:
         Certificado() = default;

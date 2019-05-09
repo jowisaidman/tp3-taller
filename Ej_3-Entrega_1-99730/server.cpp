@@ -58,18 +58,5 @@ int main(int argc, char *argv[]) {
     delete hilo_aceptador;
     
     indice.escribirArchivo();
-   //std::cout << "LLega hasta aca\n";
     return 0;
 }
-
-
-/*    ComandoServidor comando;
-
-    std::string entrada;
-
-    comando.inciarModo(*socket_connect,indice,claves);
-
-
-    socket_connect->cerrarConexion(); 
-    delete socket_connect;
-*/

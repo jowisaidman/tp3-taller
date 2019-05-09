@@ -19,7 +19,7 @@ class AcceptadorDeConexiones : public Thread {
         Indice &indice,Claves &claves);
         ~AcceptadorDeConexiones();
         virtual void run() override;
-        void finalizarEjecucion(); //ver si conviene hacerlo en el destructor
+        void finalizarEjecucion(); 
 };
 
 

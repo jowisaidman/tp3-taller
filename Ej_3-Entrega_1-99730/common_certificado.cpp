@@ -104,78 +104,78 @@ std::string Certificado :: getCertificado() {
     return this->certificado_completo;
 }
 
-void Certificado :: asignarCadena(size_t pos_inicial,size_t pos_final,std::string &cadena) {
+void Certificado :: asignarCadena(size_t pos_inicial,
+  size_t pos_final,std::string &cadena) {
     for (size_t i=pos_inicial; i< pos_final; i++) {
         cadena+= this->certificado_completo[i];
     }     
 } 
-//void Certificado :: extraerDato(std::string inicio,puntero) {
-//
-//} 
+void Certificado :: calcularPosicion(size_t &pos_inicial,size_t &pos_final,
+    std::string &inicio, std::string &fin) {
+        pos_inicial = this->certificado_completo.find(inicio)+inicio.size();;
+        pos_final = this->certificado_completo.find(fin,pos_inicial); 
+} 
 
-//Estoy copiando codigo a morir, ver como pasar this-> como parametro;
 void Certificado :: extraerSubject() {
     std::string subject = "subject: ";
-    size_t pos_inicial = this->certificado_completo.find(subject) 
-      +subject.size();
     std::string salto = "\n";
-    size_t pos_final = this->certificado_completo.find(salto,pos_inicial);
-    //for (size_t i = pos_inicial; i<pos_final; i++) {
-    //  this->subject += this->certificado_completo[i];
-    //}
-    asignarCadena(pos_inicial,pos_final,this->subject);
+    size_t pos_inicial(0);
+    size_t pos_final(0);
+    this->calcularPosicion(pos_inicial,pos_final,subject,salto);
+    this->asignarCadena(pos_inicial,pos_final,this->subject);
 }
 
 void Certificado :: extraerSerialNumber() {
     std::string sn = "serial number: ";
-    size_t pos_inicial = this->certificado_completo.find(sn) + sn.size();
     std::string parentesis = " (";
-    size_t pos_final = this->certificado_completo.find(parentesis,pos_inicial);
+    size_t pos_inicial(0);
+    size_t pos_final(0);
+    this->calcularPosicion(pos_inicial,pos_final,sn,parentesis);
     sn = "";
-    asignarCadena(pos_inicial,pos_final,sn);
+    this->asignarCadena(pos_inicial,pos_final,sn);
     this->serial_number = (uint32_t)std::stoi(sn);
 }
 
 void Certificado :: extraerIssuer() {
     std::string issuer = "issuer: ";
-    size_t pos_inicial = this->certificado_completo.find(issuer) +issuer.size();
     std::string salto = "\n";
-    size_t pos_final = this->certificado_completo.find(salto,pos_inicial);
-    asignarCadena(pos_inicial,pos_final,this->issuer);
+    size_t pos_inicial(0);
+    size_t pos_final(0);
+    this->calcularPosicion(pos_inicial,pos_final,issuer,salto);
+    this->asignarCadena(pos_inicial,pos_final,this->issuer);
 }
 
 void Certificado :: extraerFechas() {
     std::string f_inicial = "not before: ";
-    size_t pos_inicial = this->certificado_completo.find(f_inicial)
-     +f_inicial.size();
     std::string salto = "\n";
-    size_t pos_final = this->certificado_completo.find(salto,pos_inicial);
-    asignarCadena(pos_inicial,pos_final,this->fecha_inicial);
+    size_t pos_inicial(0);
+    size_t pos_final(0);
+    this->calcularPosicion(pos_inicial,pos_final,f_inicial,salto);
+    this->asignarCadena(pos_inicial,pos_final,this->fecha_inicial);
     std::string f_final = "not after: ";
-    pos_inicial = this->certificado_completo.find(f_final) +f_final.size();
-    pos_final = this->certificado_completo.find(salto,pos_inicial);
-    asignarCadena(pos_inicial,pos_final,this->fecha_final);
+    this->calcularPosicion(pos_inicial,pos_final,f_final,salto);
+    this->asignarCadena(pos_inicial,pos_final,this->fecha_final);
 }
 
 void Certificado :: extraerModulo() {
     std::string modulus = "modulus: ";
-    size_t pos_inicial = this->certificado_completo.find(modulus)
-     +modulus.size();
     std::string parentesis = " (";
-    size_t pos_final = this->certificado_completo.find(parentesis,pos_inicial);
+    size_t pos_inicial(0);
+    size_t pos_final(0);
+    this->calcularPosicion(pos_inicial,pos_final,modulus,parentesis);
     std::string mod;
-    asignarCadena(pos_inicial,pos_final,mod);
+    this->asignarCadena(pos_inicial,pos_final,mod);
     this->modulo = (uint16_t)std::stoi(mod);
 }
 
 void Certificado :: extraerExponente() {
     std::string exponent = "exponent: ";
-    size_t pos_inicial = this->certificado_completo.find(exponent)
-     +exponent.size();
     std::string parentesis = " (";
-    size_t pos_final = this->certificado_completo.find(parentesis,pos_inicial);
+    size_t pos_inicial(0);
+    size_t pos_final(0);
+    this->calcularPosicion(pos_inicial,pos_final,exponent,parentesis);
     std::string exp;
-    asignarCadena(pos_inicial,pos_final,exp);
+    this->asignarCadena(pos_inicial,pos_final,exp);
     this->exponente = (uint16_t)std::stoi(exp);
 } 
 

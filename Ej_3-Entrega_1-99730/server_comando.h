@@ -25,7 +25,7 @@ class ComandoServidor {
             Claves &claves,uint32_t huella);
         
     public:
-        ComandoServidor(SocketConnect *socket);
+        explicit ComandoServidor(SocketConnect *socket);
         ~ComandoServidor() = default;
 
         //Recibe como parametro un SocketConnect, un Indice y Claves. Espera

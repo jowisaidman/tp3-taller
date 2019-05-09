@@ -23,7 +23,7 @@ class ComandoCliente {
 
 
     public:
-        ComandoCliente(SocketConnect *socket);
+        explicit ComandoCliente(SocketConnect *socket);
         ~ComandoCliente() = default;
 
         //Recibe como parametro un SocketConnect, RequestCliente,

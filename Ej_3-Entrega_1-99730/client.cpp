@@ -20,7 +20,6 @@ int main(int argc, char *argv[]) {
     }
     std::string modo = argv[3];
     
-    //Abro archivos y parseo [FALTA CHEQUEAR QUE LOS ARCHIVOS SE ABRIERON BIEN]
     std::string archivo_clave_cliente = argv[5];
     ClaveCliente claves_cliente(archivo_clave_cliente);
     claves_cliente.parser();

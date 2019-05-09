@@ -1,5 +1,5 @@
 #include "server_aceptador_de_conexiones.h"
-#include <vector>
+#include <list>
 
 AcceptadorDeConexiones :: AcceptadorDeConexiones(SocketAccept &socket_aceptador,
     Indice &indice,Claves &claves) {
@@ -18,7 +18,7 @@ void AcceptadorDeConexiones :: finalizarEjecucion() {
 }
 
 void AcceptadorDeConexiones :: run() {
-    std::vector<Comunicador*> comunicadores;
+    std::list<Comunicador*> comunicadores;
     while (this->continuar_ejecutando) {
         SocketConnect *socket_connect = socket_aceptador->acceptSocket();
         if (!this->continuar_ejecutando) {
@@ -33,9 +33,21 @@ void AcceptadorDeConexiones :: run() {
             indice,claves));
             comunicadores.back()->start();
         }
+
+        for (auto i = comunicadores.begin(); i != comunicadores.end();) {
+            if (!(*i)->terminoEjecucion()) {
+                ++i;
+            } else {
+                (*i)->join();
+                delete (*i);
+                i = comunicadores.erase(i);
+            }
+        }
     }
-    for (unsigned int i = 0; i<comunicadores.size(); i++) {
-        comunicadores[i]->join();
-        delete comunicadores[i];        
+
+    for (auto i = comunicadores.begin(); i!= comunicadores.end();) {
+        (*i)->join();
+        delete (*i);
+        i = comunicadores.erase(i);
     }
 }
