@@ -1,8 +1,7 @@
 #include <string>
-#include "client_clave.h"
+#include "common_claves.h"
 
-
-void ClaveCliente :: parser() {
+void Claves :: parser() {
     std::string buf;
     leerArchivo(buf);
     size_t pos = 0;
@@ -19,14 +18,14 @@ void ClaveCliente :: parser() {
     mod = (uint16_t)stoi(buf); 
 }
 
-uint16_t ClaveCliente :: getModulo(){
+uint8_t Claves :: getModulo() {
     return mod;
 }
 
-uint8_t ClaveCliente :: getExponentePrivado(){
+uint16_t Claves :: getExponentePrivado() {
     return exp_privado;
 }
 
-uint8_t ClaveCliente :: getExponentePublico(){
+uint16_t Claves :: getExponentePublico() {
     return exp_publico;
 }

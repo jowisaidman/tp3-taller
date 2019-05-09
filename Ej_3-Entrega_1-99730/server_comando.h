@@ -4,7 +4,7 @@
 #include <string>
 #include "common_protocolo.h" 
 #include "common_socket_connect.h"
-#include "server_claves.h"
+#include "common_claves.h"
 #include "server_indice.h"
 #include "common_certificado.h"
 

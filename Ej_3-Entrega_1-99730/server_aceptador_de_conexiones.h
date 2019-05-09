@@ -3,7 +3,7 @@
 #include "server_socket_accept.h"
 #include "server_comunicador.h"
 #include "server_indice.h"
-#include "server_claves.h"
+#include "common_claves.h"
 #include <vector>
 
 

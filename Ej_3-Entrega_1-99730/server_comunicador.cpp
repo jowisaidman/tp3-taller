@@ -17,9 +17,12 @@ bool Comunicador :: terminoEjecucion() {
 }
 
 void Comunicador :: run() {
-    ComandoServidor comando(socket);
-
-    comando.inciarModo(*indice,*claves);
+    try {
+        ComandoServidor comando(socket);
+        comando.inciarModo(*indice,*claves);
+    } catch (const std::runtime_error& e) {
+        std::cout << e.what() << std::endl;
+    }
     socket->cerrarConexion(); 
     delete socket;
     termino = true;

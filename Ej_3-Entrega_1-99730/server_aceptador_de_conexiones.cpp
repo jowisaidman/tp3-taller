@@ -14,7 +14,7 @@ AcceptadorDeConexiones :: ~AcceptadorDeConexiones() {
 
 void AcceptadorDeConexiones :: finalizarEjecucion() {
     this->continuar_ejecutando = false;
-    this->socket_aceptador->~SocketAccept();
+    this->socket_aceptador->cerrarSocket();
 }
 
 void AcceptadorDeConexiones :: run() {

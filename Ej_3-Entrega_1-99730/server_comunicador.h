@@ -2,7 +2,7 @@
 #define COMUNICADOR_H
 #include "server_thread.h"
 #include "server_indice.h"
-#include "server_claves.h"
+#include "common_claves.h"
 #include "common_socket_connect.h"
 #include "server_comando.h"
 

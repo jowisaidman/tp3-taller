@@ -1,32 +1,53 @@
 #define UINT8_SIZE 1
 #define UINT16_SIZE 2
 #define UINT32_SIZE 4
+#define TAM 10
 
 #include "common_protocolo.h"
 #include <arpa/inet.h>
 #include <string>
 
+void obtenerTam(uint32_t &tam_total, uint32_t &r) {
+	if (tam_total - r - TAM > tam_total) {
+		r = tam_total%TAM;
+	} else {
+		r = TAM;
+	}
+}
+
 Protocolo& Protocolo :: operator<<(std::string &cadena) {
 	uint32_t tam = (uint32_t)cadena.size();
-	char cad[50];
-	strncpy(cad, cadena.data(),cadena.size());
+	uint32_t enviado = 0;
 	this->enviarInt32(tam);
-	this->socket->enviarMensaje(cad,tam);
+	while (tam > enviado) {
+		char cad[TAM];
+		uint32_t e = 0;
+		obtenerTam(tam,e);
+		strncpy(cad, cadena.data()+enviado,e);
+		this->socket->enviarMensaje(cad,e);
+		enviado+=e;
+	}
 	return *this;
 }
 
 Protocolo& Protocolo :: operator>>(std::string &cadena) {
 	uint32_t tam = 0;
+	uint32_t recibido = 0;
 	this->recibirInt32(&tam);
-    char buffer[50];
-	this->socket->recibirMensaje(buffer,tam);
-	buffer[tam] = '\0';
-	cadena = buffer;
+	while (tam > recibido) {
+		char buffer[TAM];
+		uint32_t r = 0;
+		obtenerTam(tam,r);
+		this->socket->recibirMensaje(buffer,r);
+		buffer[r] = '\0';
+		cadena += buffer;
+		recibido += r;
+	}
 	return *this;
 }
 
 Protocolo :: Protocolo(SocketConnect *socket) {
-		this->socket = socket;
+	this->socket = socket;
 }
 
 Protocolo& Protocolo :: operator>>(uint8_t &num) {

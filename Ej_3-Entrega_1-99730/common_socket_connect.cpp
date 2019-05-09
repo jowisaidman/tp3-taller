@@ -1,6 +1,7 @@
 #include <string.h>
 #include <string>
 #include <iostream>
+#include "common_error.h"
 #include "common_socket_connect.h"
 
 void SocketConnect :: set_hints_socket() {
@@ -25,6 +26,8 @@ bool SocketConnect :: addrinfo(const char *hostn,const char *srvn) {
 	s = getaddrinfo(hostn, srvn, &hints, &result);
    	if (s != 0) { 
       		printf("Error in getaddrinfo: %s\n", gai_strerror(s));
+					Error error;
+					error.error_desconexion();
       		return false;
    	}
    	return true;	
@@ -38,11 +41,15 @@ bool SocketConnect :: conectar() {
    		   ptr->ai_protocol);
         if (skt == -1) {
             printf("Error: %s\n", strerror(errno));
+						Error error;
+						error.error_desconexion();
         } else {
 			s = connect(skt, ptr->ai_addr,
          	  ptr->ai_addrlen);
 			if (s == -1) {
 				printf("Error: %s\n", strerror(errno));
+				Error error;
+				error.error_desconexion();
 				close(skt);
 			}
 			conexion_establecida = (s != -1);
@@ -70,6 +77,8 @@ int SocketConnect :: recibirMensaje(char *buf,int tam) {
 	if (el_socket_es_valido) {
 		return recibido;
 	} else {
+		Error error;
+		error.error_desconexion();
 		return -1;
 	}
 }
@@ -88,6 +97,8 @@ int SocketConnect :: enviarMensaje(char *buf,int tam) {
 	if (el_socket_es_valido) {
 		return total;
 	} else {
+		Error error;
+		error.error_desconexion();
 		return -1;
 	}
 }

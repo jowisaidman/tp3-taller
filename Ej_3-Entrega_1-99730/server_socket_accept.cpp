@@ -9,10 +9,13 @@ SocketAccept :: SocketAccept() {
 }
 
 SocketAccept :: ~SocketAccept() {
-	shutdown(skt,SHUT_RDWR);
-    close(skt);
     skt = -1;
     s = -1;
+}
+
+void SocketAccept :: cerrarSocket() {
+	shutdown(skt,SHUT_RDWR);
+	close(skt);
 }
 
 void SocketAccept :: setHints() {

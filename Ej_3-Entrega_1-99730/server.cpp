@@ -2,7 +2,7 @@
 #include "common_socket_connect.h"
 #include "common_certificado.h"
 #include "common_protocolo.h"
-#include "server_claves.h"
+#include "common_claves.h"
 #include "server_indice.h"
 #include "server_socket_accept.h"
 #include "server_aceptador_de_conexiones.h"

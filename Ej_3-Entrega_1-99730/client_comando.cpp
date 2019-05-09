@@ -18,7 +18,7 @@ void ComandoCliente :: guardarCertificado(Certificado &certificado) {
 
 bool ComandoCliente :: comandoNewRecibirRespuesta(
     Protocolo &protocolo, ClavePublicaServer &clave_server,
-    ClaveCliente &clave_cliete) { 
+    Claves &clave_cliete) { 
     uint8_t se_agrego = -1;
     this->protocolo >> se_agrego;
 
@@ -73,7 +73,7 @@ bool ComandoCliente :: comandoNewRecibirRespuesta(
 }
 
 bool ComandoCliente :: comandoNew(
-    RequestCliente &request, ClaveCliente &claves_cliente, 
+    RequestCliente &request, Claves &claves_cliente, 
     ClavePublicaServer &clave_server) {
     uint8_t m = 0;
     if (!this->enviarModo(m)) return false;
@@ -116,7 +116,7 @@ uint8_t ComandoCliente :: respuestaDelServidor() {
 
 
 bool ComandoCliente :: comandoRevoke(
-    ArchivoCertificado &arch_certificado, ClaveCliente &claves_cliente
+    ArchivoCertificado &arch_certificado, Claves &claves_cliente
     ,ClavePublicaServer &clave_server) {
     Certificado certificado;
     std::string certificado_texto = arch_certificado.getCertificado();

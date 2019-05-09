@@ -29,6 +29,7 @@ class SocketAccept {
         bool sktOpciones();
         bool addrinfo(char *srvn);
         bool sktSocketAccept();
+        void cerrarSocket();
 };
 
 #endif
