@@ -13,7 +13,7 @@ class Fecha {
 
     public:
         Fecha();
-        ~Fecha();
+        ~Fecha() = default;
         //Devuelve la fecha actual.
         std::string getFechaActual();
 

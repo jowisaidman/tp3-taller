@@ -8,16 +8,16 @@
 
 class Comunicador : public Thread {
         private:
-        SocketConnect *socket;
+        SocketConnect socket;
         Indice *indice;
         Claves *claves;
         bool termino;
 
         public:
         bool terminoEjecucion();
-        Comunicador(SocketConnect *socket,
+        Comunicador(SocketConnect socket,
         Indice *indice,Claves *claves);
-        ~Comunicador();
+        ~Comunicador() = default;
         virtual void run() override;
 };
 

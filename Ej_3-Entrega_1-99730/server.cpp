@@ -11,13 +11,11 @@
 #include <string>
 
 int main(int argc, char *argv[]) {
-    //Reviso parametros
     if (argc != 4) {
         std::cout << "Error: argumentos invalidos." << std::endl;
         return 0;
     }
     
-    //Abro archivos, parseo y cargo en memoria datos necesarios 
     std::string archivo_claves = argv[2];
     Claves claves(archivo_claves);
     claves.parser();
@@ -25,22 +23,16 @@ int main(int argc, char *argv[]) {
     std::string archivo_indice = argv[3];
     Indice indice(archivo_indice);
 
-    //Creo socket accept
     SocketAccept socket_accept;
 
-   	//seteo direcciones posibles
     if (!socket_accept.addrinfo(argv[1])) return 1;
 	
-	//seteo socket del servidor
     if (!socket_accept.sktSocketAccept()) return 1;
 
-	//seteo opciones
 	if (!socket_accept.sktOpciones()) return 1;		
 	
-	//bind
     if (!socket_accept.bindSocketAccept()) return 1;
 	
-	//listen
     if (!socket_accept.listenSocketAccept()) return 1;
 
     bool continuar_ejecutando = true;

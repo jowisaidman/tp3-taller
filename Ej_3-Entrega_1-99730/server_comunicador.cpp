@@ -1,15 +1,12 @@
 #include "server_comunicador.h"
 
 
-Comunicador :: Comunicador(SocketConnect *socket,
+Comunicador :: Comunicador(SocketConnect socket,
     Indice *indice,Claves *claves) {
-    this->socket = socket;
+    this->socket = std::move(socket);
     this->indice = indice;
     this->claves = claves;
     termino = false;
-}
-
-Comunicador :: ~Comunicador() {
 }
 
 bool Comunicador :: terminoEjecucion() {
@@ -18,12 +15,13 @@ bool Comunicador :: terminoEjecucion() {
 
 void Comunicador :: run() {
     try {
-        ComandoServidor comando(socket);
+        ComandoServidor comando(&socket);
         comando.inciarModo(*indice,*claves);
+        socket.cerrarConexion(); 
+        termino = true;
     } catch (const std::runtime_error& e) {
         std::cout << e.what() << std::endl;
+    } catch (...) {
+        std::cout << "Ocurrio un error desconocido" << std::endl;
     }
-    socket->cerrarConexion(); 
-    delete socket;
-    termino = true;
 }

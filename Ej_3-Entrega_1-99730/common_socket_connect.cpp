@@ -41,15 +41,11 @@ bool SocketConnect :: conectar() {
    		   ptr->ai_protocol);
         if (skt == -1) {
             printf("Error: %s\n", strerror(errno));
-						Error error;
-						error.error_desconexion();
         } else {
 			s = connect(skt, ptr->ai_addr,
          	  ptr->ai_addrlen);
 			if (s == -1) {
 				printf("Error: %s\n", strerror(errno));
-				Error error;
-				error.error_desconexion();
 				close(skt);
 			}
 			conexion_establecida = (s != -1);
@@ -57,6 +53,8 @@ bool SocketConnect :: conectar() {
     }
 	freeaddrinfo(result); 
 	if (conexion_establecida == false) {
+		Error error;
+		error.error_desconexion();
 		return false;
 	}
 	return true;
@@ -105,4 +103,23 @@ int SocketConnect :: enviarMensaje(char *buf,int tam) {
 
 void SocketConnect :: cerrarConexion() {
 	shutdown(skt, SHUT_RDWR);
+}
+
+SocketConnect :: SocketConnect(SocketConnect&& other) {
+    this->s = std::move(other.s);
+	this->skt = std::move(other.skt);
+	other.skt = -1;
+	other.s = -1;
+}
+
+SocketConnect& SocketConnect :: operator=(SocketConnect&& other) {
+    this->s = std::move(other.s);
+	this->skt = std::move(other.skt);
+	other.skt = -1;
+	other.s = -1;
+    return *this;
+}
+
+bool SocketConnect :: isValid() {
+	return this->skt != -1;
 }

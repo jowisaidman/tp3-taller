@@ -63,6 +63,8 @@ int main(int argc, char *argv[]) {
     } catch (const std::runtime_error& e) {
         std::cout << e.what() << std::endl;
         return 0;
+    } catch (...) {
+        std::cout << "Ocurrio un error inesperado" << std::endl;
     }
     socket_cliente.cerrarConexion();
     return 0;

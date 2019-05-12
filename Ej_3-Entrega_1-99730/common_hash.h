@@ -6,10 +6,10 @@
 
 class Hash {
     public:
-        Hash();
+        Hash() = default;
         //Recibe como parametro un string y calcula su hash.
         uint16_t calcularHash(const std::string &cadena);
-        ~Hash();
+        ~Hash() = default;
 };
 
 #endif

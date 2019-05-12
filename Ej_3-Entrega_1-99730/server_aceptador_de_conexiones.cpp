@@ -20,17 +20,17 @@ void AcceptadorDeConexiones :: finalizarEjecucion() {
 void AcceptadorDeConexiones :: run() {
     std::list<Comunicador*> comunicadores;
     while (this->continuar_ejecutando) {
-        SocketConnect *socket_connect = socket_aceptador->acceptSocket();
+        SocketConnect socket_connect = socket_aceptador->acceptSocket();
         if (!this->continuar_ejecutando) {
-            delete socket_connect;
             continue;
         }
 
-        if (socket_connect == nullptr) {
+        if (!socket_connect.isValid()) {
             this->continuar_ejecutando = false;
         } else {
-            comunicadores.push_back(new Comunicador(socket_connect,
-            indice,claves));
+            Comunicador* comunicador = new Comunicador(std::move
+            (socket_connect),indice,claves);
+            comunicadores.push_back(comunicador);
             comunicadores.back()->start();
         }
 

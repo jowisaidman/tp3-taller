@@ -37,6 +37,13 @@ class SocketConnect {
         //Recibe un string y un int.
         //Espera un mensaje del socket al cual esta conectado.
         int recibirMensaje(char *buf, int tam);
+
+        //Devuelve un booleano indicando si el socket es valido
+        bool isValid();
+
+        SocketConnect& operator=(const SocketConnect&) = delete;
+        SocketConnect(SocketConnect&& other);
+        SocketConnect& operator=(SocketConnect&& other);
 };
 
 #endif

@@ -8,9 +8,6 @@ Fecha :: Fecha() {
     fecha_actual = std::localtime(&t);
 }
 
-Fecha :: ~Fecha() {
-}
-
 std::string Fecha :: getFechaActual() {
     char buf[NAME_SIZE];
     strftime(buf,NAME_SIZE,"%b",fecha_actual);

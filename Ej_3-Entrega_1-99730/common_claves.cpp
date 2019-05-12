@@ -3,7 +3,7 @@
 
 void Claves :: parser() {
     std::string buf;
-    leerArchivo(buf);
+    this->leerArchivo(buf);
     size_t pos = 0;
     int num_de_palabra = 0;
     std::string token;

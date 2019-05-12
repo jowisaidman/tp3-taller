@@ -23,7 +23,7 @@ class SocketAccept {
     public:
         SocketAccept();
         ~SocketAccept();
-        SocketConnect* acceptSocket();
+        SocketConnect acceptSocket();
         bool listenSocketAccept();
         bool bindSocketAccept();
         bool sktOpciones();

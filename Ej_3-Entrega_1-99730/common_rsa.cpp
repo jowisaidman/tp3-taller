@@ -1,12 +1,6 @@
 #include "common_rsa.h"
 #include <cstdlib>
 
-Rsa :: Rsa() {
-}
-
-Rsa :: ~Rsa() {
-}
-
 uint32_t Rsa :: calcularRsa(
     const uint16_t &hash,
     const uint8_t &exp,

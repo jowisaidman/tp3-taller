@@ -79,12 +79,8 @@ bool SocketAccept :: listenSocketAccept() {
 	return true;
 }
 
-SocketConnect *SocketAccept :: acceptSocket() {
+SocketConnect SocketAccept :: acceptSocket() {
 	int skt_aceptado = accept(skt, NULL, NULL); 
-	if (skt == -1) {
-		printf("Error: %s\n", strerror(errno));
-		return nullptr;
-	}
-	return new SocketConnect(skt_aceptado);
+	return SocketConnect(skt_aceptado);
 } 
 

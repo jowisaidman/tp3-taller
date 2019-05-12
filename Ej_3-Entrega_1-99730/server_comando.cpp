@@ -76,7 +76,7 @@ bool ComandoServidor :: comandoRevoke(
 }
 
 bool ComandoServidor :: comandoNewEnviarRespuesta(
-    Certificado &certificado,uint32_t &rsa) {//falta try except
+    Certificado &certificado,uint32_t &rsa) {
         
         uint32_t sn = certificado.getSerialNumber();
         this->protocolo << sn;
@@ -121,7 +121,7 @@ bool ComandoServidor :: comandoNew(Indice &indice,Claves &claves) {
     this->protocolo >> fecha_final; 
 
     uint8_t rta;
-    if (!indice.agregarSiNoPertenece(subject,exp,mod)) { //CHEQUEAR ESTO
+    if (!indice.agregarSiNoPertenece(subject,exp,mod)) { 
         rta = 1;
         this->protocolo << rta;
         return false;
