@@ -13,30 +13,29 @@
 #include "client_archivo_certificado.h"
 
 int main(int argc, char *argv[]) {
-    //Reviso parametros
     if (argc != 7) {
         std::cout << "Error: argumentos invalidos." << std::endl;
         return 0;
     }
-    std::string modo = argv[3];
-    
-    std::string archivo_clave_cliente = argv[5];
-    Claves claves_cliente(archivo_clave_cliente);
-    claves_cliente.parser();
-
-    std::string archivo_clave_pub_srv = argv[6];
-    ClavePublicaServer clave_pub_server(archivo_clave_pub_srv);
-    clave_pub_server.parser();
-
-   	SocketConnect socket_cliente;            
     try {
+        std::string modo = argv[3];
+
+        std::string archivo_clave_cliente = argv[5];
+        Claves claves_cliente(archivo_clave_cliente);
+        claves_cliente.parser();
+
+        std::string archivo_clave_pub_srv = argv[6];
+        ClavePublicaServer clave_pub_server(archivo_clave_pub_srv);
+        clave_pub_server.parser();
+
+   	    SocketConnect socket_cliente;            
         if (!socket_cliente.addrinfo(argv[1],argv[2])) {
             std::cout << "Problema en addrinfo" << std::endl;
             return 0;
         }
 
         if (!socket_cliente.conectar()) {
-            std::cout << "Problema en connect" << std::endl;
+            std::cout << "Problema en connectar" << std::endl;
             return 0;
         }
 
