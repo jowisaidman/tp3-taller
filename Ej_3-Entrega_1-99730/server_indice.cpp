@@ -89,13 +89,7 @@ bool Indice :: eliminarSiPertenece(const std::string &nombre) {
 }
 
 bool Indice :: clientePerteneceAEspera(const std::string &cliente) {
-    for (std::map<std::string,Cliente*>::iterator 
-    it=mapa_de_espera.begin(); it!=mapa_de_espera.end(); ++it) {
-        if (cliente == it->second->getNombre()) {
-            return true;
-        }
-    }
-    return false;      
+    return (mapa_de_espera.find(cliente) != mapa_de_espera.end());
 }
 
 void Indice :: agregarAEspera(std::string &nombre,
